@@ -16,7 +16,7 @@ public interface PatientInfoProxy {
 	List<PatientBean> getPatients();
 	
 	@GetMapping(value = "/PatientInfo/byId")
-	ResponseEntity<?> getPatientById (@RequestParam Long id);
+	PatientBean getPatientById (@RequestParam Integer id);
 	
 	@GetMapping(value = "/PatientInfo/byName")
 	List<PatientBean> getPatientsByFamilyAndGiven(

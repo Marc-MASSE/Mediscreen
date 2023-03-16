@@ -24,7 +24,7 @@ public class Patient {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	
 	// Last name in the HL7 (Health Level Seven) standard
 	private String family;

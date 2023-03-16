@@ -18,7 +18,7 @@ public interface IPatientInfoService {
 	 * @param id
 	 * @return the patient according to this id
 	 */
-	Optional<Patient> getPatientById(Long id);
+	Optional<Patient> getPatientById(Integer id);
 	
 	/**
 	 * To find the list of patients according to a Last name and First name
@@ -29,7 +29,7 @@ public interface IPatientInfoService {
 	List<Patient> getPatientsByFamilyAndGiven(String family, String given);
 	
 	/**
-	 * To f a patient matching a last name, first name and birthday
+	 * To find a patient matching a last name, first name and birthday
 	 * @param family : Last name in the HL7 (Health Level Seven) standard
 	 * @param given : First name in the HL7 (Health Level Seven) standard
 	 * @param dob : birthday in the HL7 (Health Level Seven) standard

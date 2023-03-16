@@ -39,7 +39,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	 * @return the patient according to this id
 	 */
 	@Override
-	public Optional<Patient> getPatientById(Long id) {
+	public Optional<Patient> getPatientById(Integer id) {
 		log.info("Get the patient with id = {}",id);
 		/*
 		Optional<Patient> patient = patientInfoRepository.findById(id);
@@ -70,7 +70,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	}
 
 	/**
-	 * To f a patient matching a last name, first name and birthday
+	 * To find a patient matching a last name, first name and birthday
 	 * @param family : Last name in the HL7 (Health Level Seven) standard
 	 * @param given : First name in the HL7 (Health Level Seven) standard
 	 * @param dob : birthday in the HL7 (Health Level Seven) standard
