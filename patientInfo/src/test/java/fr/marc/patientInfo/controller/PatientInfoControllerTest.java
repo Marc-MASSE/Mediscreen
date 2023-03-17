@@ -26,10 +26,8 @@ public class PatientInfoControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	@Autowired
-	private PatientInfoController patientInfoController;
 	
-	// TODO GET /PatientInfo/list
+	// GET /PatientInfo/list
 	@Nested
 	class GetPatients {
 		@Test
@@ -43,12 +41,52 @@ public class PatientInfoControllerTest {
 	}
 	
 	
-	// TODO GET /PatientInfo/byId
-	
+	// GET /PatientInfo/byId
+	@Nested
+	class GetPatientById {
+		@Test
+		public void success () throws Exception {
+			mockMvc.perform(get("/PatientInfo/byId?id=1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.family", is("Last1")));
+		}
+		
+		@Test
+		public void no_patient () throws Exception {
+			mockMvc.perform(get("/PatientInfo/byId?id=5"))
+				.andExpect(status().is(404))
+				.andExpect(jsonPath("$.message", is("There is no patient with id = 5")));
+		}
+	}
 	
 	
 	// TODO GET /PatientInfo/byName
-	
+	@Nested
+	class GetPatientByName {
+		@Test
+		public void success () throws Exception {
+			mockMvc.perform(get("/PatientInfo/byName?family=Last1&&given=First1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].family", is("Last1")));
+		}
+		
+		@Test
+		public void two_answers () throws Exception {
+			mockMvc.perform(get("/PatientInfo/byName?family=Last3&&given=First3"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].family", is("Last3")))
+				.andExpect(jsonPath("$[0].dob", is("2003-03-03")))
+				.andExpect(jsonPath("$[1].family", is("Last3")))
+				.andExpect(jsonPath("$[1].dob", is("2004-04-04")));
+		}
+		
+		@Test
+		public void no_patient () throws Exception {
+			mockMvc.perform(get("/PatientInfo/byName?family=Last5&&given=First5"))
+				.andExpect(status().is(404))
+				.andExpect(jsonPath("$.message", is("There is no patient Last5 First5")));
+		}
+	}
 	
 	
 	// TODO POST /PatientInfo/add

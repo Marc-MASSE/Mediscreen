@@ -61,12 +61,15 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	@Override
 	public List<Patient> getPatientsByFamilyAndGiven(String family, String given) {
 		log.info("Get the patient {} {}",family, given);
+		/*
 		List<Patient> patientList = patientInfoRepository.findByFamilyAndGiven(family, given);
 		if (patientList.isEmpty()) {
 			log.error("There is no patient {} {}",family,given);
 	        throw new PatientNotFoundException("There is no patient " + family + " " + given);
 		}
 		return patientList;
+		*/
+		return patientInfoRepository.findByFamilyAndGiven(family, given);
 	}
 
 	/**
