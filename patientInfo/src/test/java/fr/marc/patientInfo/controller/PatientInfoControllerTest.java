@@ -40,7 +40,6 @@ public class PatientInfoControllerTest {
 		}
 	}
 	
-	
 	// GET /PatientInfo/byId
 	@Nested
 	class GetPatientById {
@@ -59,8 +58,7 @@ public class PatientInfoControllerTest {
 		}
 	}
 	
-	
-	// TODO GET /PatientInfo/byName
+	// GET /PatientInfo/byName
 	@Nested
 	class GetPatientByName {
 		@Test
@@ -88,11 +86,7 @@ public class PatientInfoControllerTest {
 		}
 	}
 	
-	
 	// TODO POST /PatientInfo/add
-	
-	
-	
 	
 
 }

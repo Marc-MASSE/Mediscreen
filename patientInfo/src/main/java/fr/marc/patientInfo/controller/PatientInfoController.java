@@ -42,13 +42,9 @@ public class PatientInfoController {
 	 * @return the patient according to this id if exist
 	 */
 	@GetMapping("/PatientInfo/byId")
-	public Patient getPatientById (@RequestParam Integer id){
+	public Optional<Patient> getPatientById (@RequestParam Integer id){
 		log.info("Get the patient with id = {}",id);
-        Optional<Patient> patient = patientInfoService.getPatientById(id);
-        if (patient.isPresent()) {
-        	return patient.get();
-        }
-        throw new PatientNotFoundException("There is no patient with id = " + id);
+		return patientInfoService.getPatientById(id);
     }
 	
 	/**
@@ -58,16 +54,11 @@ public class PatientInfoController {
 	 * @return the list of patients according to this Last name and First name if exist
 	 */
 	@GetMapping("/PatientInfo/byName")
-	public List<Patient> getPatientsByFamilyAndGiven (
-			@RequestParam String family, 
-			@RequestParam String given){
-		log.info("Get the patient {} {}",family, given);
-		List<Patient> patientList = patientInfoService.getPatientsByFamilyAndGiven(family, given);
-		if (patientList.isEmpty()) {
-			log.error("There is no patient {} {}",family,given);
-	        throw new PatientNotFoundException("There is no patient " + family + " " + given);
-		}
-		return patientList;
+	public List<Patient> getPatientsByFamilyAndGiven(
+			@RequestParam String family,
+			@RequestParam String given)
+	{
+		return patientInfoService.getPatientsByFamilyAndGiven(family, given);
 	}
 	
 	// TODO Update patient
@@ -75,10 +66,6 @@ public class PatientInfoController {
 	
 	@PostMapping("/PatientInfo/add")
 	public Patient createPatient (@RequestBody Patient patient) {
-		
 		return patientInfoService.createPatient(patient);
 	}
-	
-	
-
 }
