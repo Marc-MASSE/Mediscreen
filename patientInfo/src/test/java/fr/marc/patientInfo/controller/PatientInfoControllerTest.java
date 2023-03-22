@@ -1,6 +1,7 @@
 package fr.marc.patientInfo.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,8 +54,8 @@ public class PatientInfoControllerTest {
 		@Test
 		public void no_patient () throws Exception {
 			mockMvc.perform(get("/PatientInfo/byId?id=5"))
-				.andExpect(status().is(404))
-				.andExpect(jsonPath("$.message", is("There is no patient with id = 5")));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.family").isEmpty());
 		}
 	}
 	
@@ -81,8 +82,8 @@ public class PatientInfoControllerTest {
 		@Test
 		public void no_patient () throws Exception {
 			mockMvc.perform(get("/PatientInfo/byName?family=Last5&&given=First5"))
-				.andExpect(status().is(404))
-				.andExpect(jsonPath("$.message", is("There is no patient Last5 First5")));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").isEmpty());
 		}
 	}
 	

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -90,8 +91,14 @@ public class PatientInfoServiceImplTest {
 			verify(patientInfoRepository).findById(1);
 		}
 		
-		// TODO getPatientById test for id doen't exist
-		
+		@Test
+		public void no_patient() {
+			when(patientInfoRepository.findById(5))
+				.thenReturn(Optional.of(new Patient()));
+			assertThat(patientInfoService.getPatientById(5))
+				.isEqualTo(Optional.of(new Patient()));
+			verify(patientInfoRepository).findById(5);
+		}
 	}
 	
 	@Nested
@@ -105,8 +112,14 @@ public class PatientInfoServiceImplTest {
 			verify(patientInfoRepository).findByFamilyAndGiven("Last1","First1");
 		}
 		
-		// TODO getPatientsByFamilyAndGiven test for patient doen't exist
-		
+		@Test
+		public void no_patient() {
+			when(patientInfoRepository.findByFamilyAndGiven("Last5","First5"))
+				.thenReturn(new ArrayList<>());
+			assertThat(patientInfoService.getPatientsByFamilyAndGiven("Last5","First5"))
+				.isEmpty();
+			verify(patientInfoRepository).findByFamilyAndGiven("Last5","First5");
+		}
 	}
 	
 	@Nested
@@ -121,7 +134,15 @@ public class PatientInfoServiceImplTest {
 		}
 		
 		// TODO getPatientByFamilyAndGivenAndDob test for patient doen't exist
-		
+		@Test
+		public void no_patient() {
+			
+			when(patientInfoRepository.findFirstByFamilyAndGivenAndDob("Last5","First5","2005-05-05"))
+				.thenReturn(Optional.of(new Patient()));
+			assertThat(patientInfoService.getPatientByFamilyAndGivenAndDob("Last5","First5","2005-05-05"))
+				.isEqualTo(Optional.of(new Patient()));
+			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last5","First5","2005-05-05");
+		}
 	}
 	
 	// TODO updatePatient test
