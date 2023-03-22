@@ -47,7 +47,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 			return patient;
 		}
 		log.error("There is no patient with id = {} ",id);
-		return Optional.ofNullable(new Patient());
+		return null;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 		}
 		// Test if the patient to update already exist
 		Optional<Patient> findingPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(patient.getFamily(),patient.getGiven(), patient.getDob());
-		if (findingPatient.isPresent()&&!findingPatient.get().getId().equals(patient.getId())) {
+		if (findingPatient.isPresent() && !findingPatient.get().getId().equals(patient.getId())) {
 			log.info("The patient {} {} {} already exist",patient.getFamily(),patient.getGiven(), patient.getDob());
 			throw new PatientNotFoundException("The patient " + patient.getFamily() + " " + patient.getGiven() + " " + patient.getDob() + " already exist");
 		}
@@ -99,7 +99,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	public Patient createPatient(Patient patient){
 		// Test if the patient to update already exist
 		Optional<Patient> findingPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(patient.getFamily(),patient.getGiven(), patient.getDob());
-		if (findingPatient.isPresent()&&!findingPatient.get().getId().equals(patient.getId())) {
+		if (findingPatient.isPresent() && !findingPatient.get().getId().equals(patient.getId())) {
 			log.info("The patient {} {} {} already exist",patient.getFamily(),patient.getGiven(), patient.getDob());
 			throw new PatientNotFoundException("The patient " + patient.getFamily() + " " + patient.getGiven() + " " + patient.getDob() + " already exist");
 		}

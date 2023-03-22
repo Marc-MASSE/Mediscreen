@@ -27,7 +27,6 @@ public class PatientInfoControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	
 	// GET /PatientInfo/list
 	@Nested
 	class GetPatients {
@@ -55,7 +54,7 @@ public class PatientInfoControllerTest {
 		public void no_patient () throws Exception {
 			mockMvc.perform(get("/PatientInfo/byId?id=5"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.family").isEmpty());
+				.andExpect(jsonPath("$.family").doesNotExist());
 		}
 	}
 	

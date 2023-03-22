@@ -38,7 +38,7 @@ public class PatientController {
 	}
 	
 	@GetMapping("/PatientList")
-	public String patientListPage(Model model) {
+	public String patientListPage(Model model){
 		List<PatientBean> patients =  patientInfoProxy.getPatients();
 	    model.addAttribute("patients", patients);
 		return "PatientList";
@@ -54,8 +54,8 @@ public class PatientController {
 		List<PatientBean> patients = patientInfoProxy.getPatientsByFamilyAndGiven(family, given);
 		model.addAttribute("patients",patients);
 
-		if (patients.isEmpty()&&!family.isEmpty()&&!given.isEmpty()) {
-			String errorMessage = "There is no patient "+ family + " "+given;
+		if (patients.isEmpty() && !family.isEmpty() && !given.isEmpty()) {
+			String errorMessage = "Sorry, " + family + " " + given + " is not registered.";
 			model.addAttribute("errorMessage",errorMessage);
 		}
 		return "PatientSearch";
@@ -71,7 +71,7 @@ public class PatientController {
             log.info("BindingResult = {}",result);
 			return "PatientSearch";
         }
-		return "redirect:/PatientSearch?family="+patientBean.getFamily()+"&&given="+patientBean.getGiven();
+		return "redirect:/PatientSearch?family=" + patientBean.getFamily() + "&&given=" + patientBean.getGiven();
 	}
 	
 	@GetMapping("/PatientInfo")
