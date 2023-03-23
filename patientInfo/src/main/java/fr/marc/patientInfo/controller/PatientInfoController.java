@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,21 +42,9 @@ public class PatientInfoController {
 	 * @return the patient according to this id if exist
 	 */
 	@GetMapping("/PatientInfo/byId")
-	public ResponseEntity<?> getPatientById (@RequestParam Long id){
+	public Optional<Patient> getPatientById (@RequestParam Integer id){
 		log.info("Get the patient with id = {}",id);
-        Optional<Patient> patient = patientInfoService.getPatientById(id);
-        if (patient.isPresent()) {
-        	return ResponseEntity.ok(patient.get());
-        }
-        log.error("There is no patient with id = {} ",id);
-        // TODO La méthode du cours ne permet pas de renvoyer une réponse personnalisée :
-        // La réponse HTTP envoyée par l'application a été remplacée par une réponse 
-        // par défaut du conteneur de servlet, qui inclut le message "Not Found" et d'autres 
-        // informations par défaut.
-        // throw new PatientNotFoundException("There is no patient with id = " + id);
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("There is no patient with id = " + id);
+		return patientInfoService.getPatientById(id);
     }
 	
 	/**
@@ -64,20 +54,18 @@ public class PatientInfoController {
 	 * @return the list of patients according to this Last name and First name if exist
 	 */
 	@GetMapping("/PatientInfo/byName")
-	public List<Patient> getPatientsByFamilyAndGiven (
-			@RequestParam String family, 
-			@RequestParam String given){
-		log.info("Get the patient {} {}",family, given);
-		List<Patient> patientList = patientInfoService.getPatientsByFamilyAndGiven(family, given);
-		if (patientList.isEmpty()) {
-			log.error("There is no patient {} {}",family,given);
-	        throw new PatientNotFoundException("There is no patient " + family + " " + given);
-		}
-		return patientList;
+	public List<Patient> getPatientsByFamilyAndGiven(
+			@RequestParam String family,
+			@RequestParam String given)
+	{
+		return patientInfoService.getPatientsByFamilyAndGiven(family, given);
 	}
 	
+	// TODO Update patient
 	
 	
-	
-
+	@PostMapping("/PatientInfo/add")
+	public Patient createPatient (@RequestBody Patient patient) {
+		return patientInfoService.createPatient(patient);
+	}
 }

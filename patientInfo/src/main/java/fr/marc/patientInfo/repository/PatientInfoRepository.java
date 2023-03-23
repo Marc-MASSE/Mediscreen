@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import fr.marc.patientInfo.model.Patient;
 
 @Repository
-public interface PatientInfoRepository extends CrudRepository<Patient, Long> {
+public interface PatientInfoRepository extends CrudRepository<Patient, Integer> {
 	
 	/**
 	 * To collect a list of patients matching a last name and first name
