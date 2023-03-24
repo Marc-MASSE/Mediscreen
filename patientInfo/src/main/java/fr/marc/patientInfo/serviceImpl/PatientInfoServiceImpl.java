@@ -81,6 +81,14 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 		return patientInfoRepository.findFirstByFamilyAndGivenAndDob(family, given, dob);
 	}
 	
+	/**
+	 * To update a patient designated by his id.
+	 * @param id : The id of the patient you want to update
+	 * @param patient : New patient data 
+	 * @return The patient updated
+	 * 			null is there is no patient with this id
+	 * 			new Patient() if the data match another patient 
+	 */
 	@Override
 	public Patient updatePatient(Integer patientId, Patient updatedPatient){
 		log.info("Update the patient with id = {}",patientId);

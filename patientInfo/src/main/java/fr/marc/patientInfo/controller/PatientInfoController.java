@@ -60,11 +60,10 @@ public class PatientInfoController {
 	
 	// TODO Update patient
 	/**
-	 * 
+	 * To update a patient designated by his id.
 	 * @param id : The id of the patient you want to update
 	 * @param patient : New patient data 
 	 * @return The patient updated
-	 * 			
 	 */
 	@PostMapping("/PatientInfo/update")
 	public Patient updatePatient (@RequestParam Integer id, @RequestBody Patient patient) {
