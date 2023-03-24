@@ -37,7 +37,7 @@ public interface IPatientInfoService {
 	 */
 	Optional<Patient> getPatientByFamilyAndGivenAndDob (String family, String given, String dob);
 	
-	Patient updatePatient(Patient patient);
+	Patient updatePatient(Integer id, Patient patient);
 	
 	Patient createPatient(Patient patient);
 }

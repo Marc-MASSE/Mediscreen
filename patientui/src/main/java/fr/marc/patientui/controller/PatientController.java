@@ -81,4 +81,26 @@ public class PatientController {
 		return "PatientInfo";
 	}
 	
+	@GetMapping("/PatientUpdate")
+	public String patientUpdatePage(@RequestParam Integer id, Model model){
+		PatientBean patient = patientInfoProxy.getPatientById(id);
+		model.addAttribute("patient",patient);
+		return "PatientUpdate";
+	}
+	
+	@PostMapping("/PatientUpdate")
+	public String PatientUpdateValidation (
+			@RequestParam Integer id,
+			@Valid 
+			@ModelAttribute("patient") PatientBean patient,
+			BindingResult result)
+	{
+		if (result.hasErrors()) {
+            log.info("BindingResult = {}",result);
+			return "PatientUpdate";
+        }
+		patientInfoProxy.updatePatient(id, patient);
+		return "redirect:/PatientInfo?id=" + id;
+	}
+	
 }

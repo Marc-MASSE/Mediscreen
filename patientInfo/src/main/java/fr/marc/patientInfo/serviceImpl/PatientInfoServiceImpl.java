@@ -38,6 +38,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	 * To find a patient according to an id
 	 * @param id
 	 * @return the patient according to this id
+	 * 			null is there is no patient with this id
 	 */
 	@Override
 	public Optional<Patient> getPatientById(Integer id){
@@ -55,6 +56,7 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	 * @param family = Last name in the HL7 (Health Level Seven) standard
 	 * @param given = First name in the HL7 (Health Level Seven) standard
 	 * @return the list of patients according to this Last name and First name
+	 * 			new Patient() if there is no patient according to this Last name and First name
 	 */
 	@Override
 	public List<Patient> getPatientsByFamilyAndGiven(String family, String given){
@@ -75,24 +77,37 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 	 */
 	@Override
 	public Optional<Patient> getPatientByFamilyAndGivenAndDob(String family, String given, String dob){
-		log.info("Get the patient {} {} {}",family, given, dob);
+		log.info("Get the patient {} {} {}", family, given, dob);
 		return patientInfoRepository.findFirstByFamilyAndGivenAndDob(family, given, dob);
 	}
 	
 	@Override
-	public Patient updatePatient(Patient patient){
-		log.info("Update the patient {} {}",patient.getFamily(),patient.getGiven());
-		if (patientInfoRepository.findById(patient.getId()).isEmpty()) {
-			log.error("There is no patient with id = {} ",patient.getId());
-			throw new PatientNotFoundException("There is no patient with id = " + patient.getId());
+	public Patient updatePatient(Integer patientId, Patient updatedPatient){
+		log.info("Update the patient with id = {}",patientId);
+		
+		Optional<Patient> currentPatient = patientInfoRepository.findById(patientId);
+		if (currentPatient.isEmpty()) {
+			return null;
 		}
 		// Test if the patient to update already exist
-		Optional<Patient> findingPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(patient.getFamily(),patient.getGiven(), patient.getDob());
-		if (findingPatient.isPresent() && !findingPatient.get().getId().equals(patient.getId())) {
-			log.info("The patient {} {} {} already exist",patient.getFamily(),patient.getGiven(), patient.getDob());
-			throw new PatientNotFoundException("The patient " + patient.getFamily() + " " + patient.getGiven() + " " + patient.getDob() + " already exist");
+		Optional<Patient> wantedPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(
+				updatedPatient.getFamily(),
+				updatedPatient.getGiven(), 
+				updatedPatient.getDob());
+		if (wantedPatient.isPresent() && !wantedPatient.get().getId().equals(patientId)) {
+			return new Patient();
 		}
-		return patientInfoRepository.save(patient);
+		currentPatient.get().setFamily(updatedPatient.getFamily());
+		currentPatient.get().setGiven(updatedPatient.getGiven());
+		currentPatient.get().setDob(updatedPatient.getDob());
+		currentPatient.get().setSex(updatedPatient.getSex());
+		if (updatedPatient.getAddress().isEmpty()) {
+			currentPatient.get().setAddress(updatedPatient.getAddress());
+		}
+		if (updatedPatient.getPhone().isEmpty()) {
+			currentPatient.get().setPhone(updatedPatient.getPhone());
+		}
+		return patientInfoRepository.save(currentPatient.get());
 	}
 
 	@Override
