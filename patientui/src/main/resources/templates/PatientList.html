@@ -46,8 +46,8 @@
 				</thead>
 				<tbody>
 					<tr th:each="patient:${patients}">
-						<td th:text="${patient.family}">Last name</td>
-						<td th:text="${patient.given}">First name</td>
+						<td th:text="${patient.family}" style="text-transform: capitalize;">Last name</td>
+						<td th:text="${patient.given}" style="text-transform: capitalize;">First name</td>
 						<td th:text="${patient.dob}">Birthday</td>
 						<td th:text="${patient.sex}">Sex</td>
 						<td th:text="${patient.address}">Address</td>
