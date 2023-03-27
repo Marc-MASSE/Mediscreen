@@ -146,7 +146,6 @@ public class PatientInfoServiceImplTest {
 		}
 	}
 	
-	// TODO updatePatient test
 	@Nested
 	class UpdatePatient {
 		@Test

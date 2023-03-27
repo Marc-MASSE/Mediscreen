@@ -71,15 +71,13 @@
 						<input type="text" th:field="*{phone}" class="form-control" /> 
 						<span class="text-danger" th:errors="*{phone}"></span>
 					</div>
-										
+					<div class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>					
 					<div class="form-group mt-4">
 						<a class="btn btn-danger" th:href="@{PatientInfo(id=${patient.id})}" role="button">Cancel</a>
 						<button type="submit" class="btn btn-primary">Update patient</button>
 					</div>
-
 				</form>
 			</div>
-
 		</div>
 	</div>
 

@@ -93,13 +93,20 @@ public class PatientController {
 			@RequestParam Integer id,
 			@Valid 
 			@ModelAttribute("patient") PatientBean patient,
-			BindingResult result)
+			BindingResult result,
+			Model model)
 	{
+		log.info("Patient Attributes: {}", patient);
 		if (result.hasErrors()) {
             log.info("BindingResult = {}",result);
 			return "PatientUpdate";
         }
-		patientInfoProxy.updatePatient(id, patient);
+		PatientBean patientResult = patientInfoProxy.updatePatient(id, patient);
+		if (patientResult.getId()==null) {
+			String errorMessage = "Sorry, " + patient.getFamily() + " " + patient.getGiven() + " already exist.";
+			model.addAttribute("errorMessage",errorMessage);
+			return "PatientUpdate";
+		}
 		return "redirect:/PatientInfo?id=" + id;
 	}
 	
