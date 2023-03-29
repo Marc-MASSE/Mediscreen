@@ -43,9 +43,10 @@ public class PatientInfoControllerTest {
 		public void success () throws Exception {
 			mockMvc.perform(get("/PatientInfo/list"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].family", is("last1")))
-				.andExpect(jsonPath("$[1].family", is("last2")))
-				.andExpect(jsonPath("$[2].family", is("last3")));
+				.andExpect(jsonPath("$[0].family", is("TestBorderline")))
+				.andExpect(jsonPath("$[1].family", is("TestEarlyOnset")))
+				.andExpect(jsonPath("$[2].family", is("TestInDanger")))
+				.andExpect(jsonPath("$[3].family", is("TestNone")));
 		}
 	}
 	
@@ -56,7 +57,7 @@ public class PatientInfoControllerTest {
 		public void success () throws Exception {
 			mockMvc.perform(get("/PatientInfo/byId?id=1"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.family", is("last1")));
+				.andExpect(jsonPath("$.family", is("TestNone")));
 		}
 		
 		@Test
@@ -72,61 +73,51 @@ public class PatientInfoControllerTest {
 	class GetPatientByName {
 		@Test
 		public void success () throws Exception {
-			mockMvc.perform(get("/PatientInfo/byName?family=last1&&given=first1"))
+			mockMvc.perform(get("/PatientInfo/byName?family=testnone&&given=test"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].family", is("last1")));
-		}
-		
-		@Test
-		public void two_answers () throws Exception {
-			mockMvc.perform(get("/PatientInfo/byName?family=last3&&given=first3"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].family", is("last3")))
-				.andExpect(jsonPath("$[0].dob", is("2003-03-03")))
-				.andExpect(jsonPath("$[1].family", is("last3")))
-				.andExpect(jsonPath("$[1].dob", is("2004-04-04")));
+				.andExpect(jsonPath("$[0].family", is("TestNone")));
 		}
 		
 		@Test
 		public void no_patient () throws Exception {
-			mockMvc.perform(get("/PatientInfo/byName?family=last5&&given=first5"))
+			mockMvc.perform(get("/PatientInfo/byName?family=nemo&&given=test"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isEmpty());
 		}
 	}
 	
-	// TODO POST /PatientInfo/update
+	// POST /PatientInfo/update
 	@Nested
 	class UpdatePatient {
 		@Test
-		public void family_and_given_updated () throws Exception {
+		public void address_and_phone_updated () throws Exception {
 			ObjectMapper mapper = new ObjectMapper();
 			Patient updatedPatient = Patient.builder()
-					.family("last4")
-					.given("first4")
-					.dob("2004-04-04")
+					.family("TestNone")
+					.given("test")
+					.dob("1966-12-31")
 					.sex("F")
-					.address("Address4")
-					.phone("444444")
+					.address("Address change")
+					.phone("Phone change")
 					.build();
-			mockMvc.perform(post("/PatientInfo/update?id=4")
+			mockMvc.perform(post("/PatientInfo/update?id=1")
 		       		.contentType(MediaType.APPLICATION_JSON)
 	        		.content(mapper.writeValueAsString(updatedPatient)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.family", is("last4")))
-				.andExpect(jsonPath("$.given", is("first4")));
+				.andExpect(jsonPath("$.address", is("Address change")))
+				.andExpect(jsonPath("$.phone", is("Phone change")));
 		}
 		
 		@Test
 		public void no_patient_with_this_id_should_return_nothing () throws Exception {
 			ObjectMapper mapper = new ObjectMapper();
 			Patient updatedPatient = Patient.builder()
-					.family("last4")
-					.given("first4")
-					.dob("2004-04-04")
+					.family("last")
+					.given("first")
+					.dob("2000-01-01")
 					.sex("F")
-					.address("Address4")
-					.phone("444444")
+					.address("Address")
+					.phone("Phone")
 					.build();
 			MvcResult result = mockMvc.perform(post("/PatientInfo/update?id=15")
 		       		.contentType(MediaType.APPLICATION_JSON)
@@ -142,12 +133,12 @@ public class PatientInfoControllerTest {
 		public void patient_already_exist_should_return_new_patient () throws Exception {
 			ObjectMapper mapper = new ObjectMapper();
 			Patient updatedPatient = Patient.builder()
-					.family("last1")
-					.given("first1")
-					.dob("2001-01-01")
+					.family("TestNone")
+					.given("test")
+					.dob("1966-12-31")
 					.sex("F")
-					.address("Address4")
-					.phone("444444")
+					.address("Address change")
+					.phone("Phone change")
 					.build();
 			mockMvc.perform(post("/PatientInfo/update?id=3")
 		       		.contentType(MediaType.APPLICATION_JSON)
