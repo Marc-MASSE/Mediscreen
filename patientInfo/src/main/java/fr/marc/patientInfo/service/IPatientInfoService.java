@@ -45,5 +45,10 @@ public interface IPatientInfoService {
 	 */
 	Patient updatePatient(Integer id, Patient patient);
 	
+	/**
+	 * To create a new patient
+	 * @param patient
+	 * @return The patient created
+	 */
 	Patient createPatient(Patient patient);
 }

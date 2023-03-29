@@ -70,6 +70,11 @@ public class PatientInfoController {
 		return patientInfoService.updatePatient(id, patient);
 	}
 	
+	/**
+	 * To create a new patient
+	 * @param patient
+	 * @return The patient created
+	 */
 	@PostMapping("/PatientInfo/add")
 	public Patient createPatient (@RequestBody Patient patient) {
 		return patientInfoService.createPatient(patient);
