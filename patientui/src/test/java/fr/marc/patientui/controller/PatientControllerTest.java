@@ -188,4 +188,34 @@ public class PatientControllerTest {
 		}
 	}
 	
+	@Nested
+	class PatientCreateRequest {
+		@Test
+		public void create_patient5() throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			PatientBean patientToCreate = PatientBean.builder()
+					.family("last5")
+					.given("first5")
+					.dob("2005-05-05")
+					.sex("M")
+					.build();
+			PatientBean patientCreated = PatientBean.builder()
+					.id(5)
+					.family("last5")
+					.given("first5")
+					.dob("2005-05-05")
+					.sex("M")
+					.build();
+			when(patientInfoProxy.createPatient(patientToCreate))
+				.thenReturn(patientCreated);
+			String requestBody = mapper.writeValueAsString(patientToCreate); // Debug
+			log.info("Request Body: {}", requestBody); // Debug
+	        mockMvc.perform(post("/PatientCreate")
+	        		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(patientToCreate)))
+	            .andExpect(status().is(302))
+	            .andExpect(view().name("redirect:/PatientInfo?id=5"));
+		}
+	}
+	
 }

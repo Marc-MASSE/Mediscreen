@@ -109,12 +109,8 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 		currentPatient.get().setGiven(updatedPatient.getGiven());
 		currentPatient.get().setDob(updatedPatient.getDob());
 		currentPatient.get().setSex(updatedPatient.getSex());
-		if (updatedPatient.getAddress().isEmpty()) {
-			currentPatient.get().setAddress(updatedPatient.getAddress());
-		}
-		if (updatedPatient.getPhone().isEmpty()) {
-			currentPatient.get().setPhone(updatedPatient.getPhone());
-		}
+		currentPatient.get().setAddress(updatedPatient.getAddress());
+		currentPatient.get().setPhone(updatedPatient.getPhone());
 		return patientInfoRepository.save(currentPatient.get());
 	}
 
