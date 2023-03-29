@@ -110,4 +110,32 @@ public class PatientController {
 		return "redirect:/PatientInfo?id=" + id;
 	}
 	
+	@GetMapping("/PatientCreate")
+	public String patientCreatePage(Model model){
+		PatientBean patient = new PatientBean();
+		model.addAttribute("patient",patient);
+		return "PatientCreate";
+	}
+	
+	@PostMapping("/PatientCreate")
+	public String PatientCreateValidation (
+			@Valid 
+			@ModelAttribute("patient") PatientBean patient,
+			BindingResult result,
+			Model model)
+	{
+		log.info("Patient Attributes: {}", patient);
+		if (result.hasErrors()) {
+            log.info("BindingResult = {}",result);
+			return "PatientCreate";
+        }
+		PatientBean patientResult = patientInfoProxy.createPatient(patient);
+		if (patientResult.getId()==null) {
+			String errorMessage = "Sorry, " + patient.getFamily() + " " + patient.getGiven() + " already exist.";
+			model.addAttribute("errorMessage",errorMessage);
+			return "PatientCreate";
+		}
+		return "redirect:/PatientInfo?id=" + patientResult.getId();
+	}
+	
 }

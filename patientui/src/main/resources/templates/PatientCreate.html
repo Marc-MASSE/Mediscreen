@@ -9,7 +9,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 
-<title>Patient update</title>
+<title>Patient create</title>
 
 </head>
 <body>
@@ -27,17 +27,17 @@
 				<li class="mx-2"><a style="color: white;" th:href="@{/}">Home</a></li>
 				<li class="mx-2"><a style="color: white;"	th:href="@{PatientList}">Patient list</a></li>
 				<li class="mx-2"><a style="color: white;"	th:href="@{PatientSearch}">Patient search</a></li>
-				<li class="mx-2"><a style="color: white;" th:href="@{PatientCreate}">New patient</a></li>
+				<li class="mx-2">New patient</li>
 			</ul>
 		</div>
 
 		<!-- Patient informations -->
 		<div class="row col-md-8 col-xs-12 mx-auto mt-4">
-			<p class="fs-3 text-primary mb-2 border-bottom">Updating patient information</p>
+			<p class="fs-3 text-primary mb-2 border-bottom">Create a new patient</p>
 
 			<div class="row">
 				<form action="#"
-					th:action="@{/PatientUpdate(id=${patient.id})}"
+					th:action="@{/PatientCreate}"
 					th:object="${patient}" method="post" class="form-horizontal"
 					style="width: 100%">
 					<div class="form-group">
@@ -72,8 +72,7 @@
 					</div>
 					<div class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>					
 					<div class="form-group mt-4">
-						<a class="btn btn-danger" th:href="@{PatientInfo(id=${patient.id})}" role="button">Cancel</a>
-						<button type="submit" class="btn btn-primary">Update patient</button>
+						<button type="submit" class="btn btn-primary">Create patient</button>
 					</div>
 				</form>
 			</div>

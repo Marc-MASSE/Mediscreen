@@ -28,4 +28,7 @@ public interface PatientInfoProxy {
 	public PatientBean updatePatient (
 			@RequestParam Integer id, 
 			@RequestBody PatientBean patient);
+	
+	@PostMapping("/PatientInfo/add")
+	public PatientBean createPatient (@RequestBody PatientBean patient);
 }
