@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -19,22 +20,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.marc.patientui.beans.PatientBean;
 import fr.marc.patientui.beans.PatientBeanDTO;
 import fr.marc.patientui.proxies.PatientInfoProxy;
 
-@AutoConfigureMockMvc
 @SpringBootTest
+@AutoConfigureMockMvc
 public class PatientControllerTest {
 	
 	@Autowired
@@ -179,11 +176,13 @@ public class PatientControllerTest {
 			ObjectMapper mapper = new ObjectMapper();
 			when(patientInfoProxy.updatePatient(1, patient1))
 				.thenReturn(patient1);
-			String requestBody = mapper.writeValueAsString(patient1);
-			log.info("Request Body: {}", requestBody);
-	        mockMvc.perform(MockMvcRequestBuilders.post("/PatientUpdate?id=1")
+			String requestBody = mapper.writeValueAsString(patient1); // Debug
+			log.info("Request Body: {}", requestBody); // Debug
+	        mockMvc.perform(post("/PatientUpdate?id=1")
 	        		.contentType(MediaType.APPLICATION_JSON)
-	        		.content(mapper.writeValueAsString(patient1)))
+	        		.content(mapper.writeValueAsString(patient1))
+	        		.flashAttr(requestBody, patient1)) // 
+	        	.andDo(print()) // Debug
 	            .andExpect(status().is(302))
 	            .andExpect(view().name("redirect:/PatientInfo?id=1"));
 		}
