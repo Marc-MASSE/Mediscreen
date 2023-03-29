@@ -134,7 +134,6 @@ public class PatientInfoServiceImplTest {
 			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last1","First1","2001-01-01");
 		}
 		
-		// TODO getPatientByFamilyAndGivenAndDob test for patient doen't exist
 		@Test
 		public void no_patient() {
 			
@@ -220,31 +219,56 @@ public class PatientInfoServiceImplTest {
 	}
 	
 	// TODO createPatient test
-	/*
 	@Nested
 	class CreatePatient {
 		@Test
 		public void success() {
-			Patient patientToAdd = Patient.builder()
-					.family("Last3")
-					.given("First3")
-					.dob("2003-03-03")
-					.sex("F")
-					.address("Address3")
-					.phone("333333")
+			Patient patientToCreate = Patient.builder()
+					.family("Last4")
+					.given("First4")
+					.dob("2004-04-04")
+					.sex("M")
+					.address("Address4")
+					.phone("444444")
 					.build();
-			when(patientInfoRepository.save(patientToAdd))
-				.thenReturn(patient3);
-			patientInfoService.createPatient(patientToAdd);
+			Patient patientCreated = Patient.builder()
+					.id(4)
+					.family("Last4")
+					.given("First4")
+					.dob("2004-04-04")
+					.sex("M")
+					.address("Address4")
+					.phone("444444")
+					.build();
+			when(patientInfoRepository.findFirstByFamilyAndGivenAndDob("Last4","First4","2004-04-04"))
+				.thenReturn(Optional.empty());
+			when(patientInfoRepository.save(patientToCreate))
+				.thenReturn(patientCreated);
+			Patient returnPatient = patientInfoService.createPatient(patientToCreate);
 			verify(patientInfoRepository).save(patientCaptor.capture());
 			assertThat(patientCaptor.getValue())
-				.isEqualTo(patient3);
-			verify(patientInfoRepository).save(patientToAdd);
+				.isEqualTo(patientToCreate);
+		    assertThat(returnPatient).isEqualTo(patientCreated);
+			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last4","First4","2004-04-04");
+			verify(patientInfoRepository).save(patientToCreate);
 		}
 		
-		// TODO createPatient test for patient already exist
-		
+		@Test
+		public void patient_already_exist() {
+			Patient patientToCreate = Patient.builder()
+					.family("Last1")
+					.given("First1")
+					.dob("2001-01-01")
+					.sex("F")
+					.address("Address1")
+					.phone("111111")
+					.build();
+			when(patientInfoRepository.findFirstByFamilyAndGivenAndDob("Last1","First1","2001-01-01"))
+				.thenReturn(Optional.of(patient1));
+			Patient returnPatient = patientInfoService.createPatient(patientToCreate);
+		    assertThat(returnPatient).isEqualTo(new Patient());
+			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last1","First1","2001-01-01");
+		}
 	}
-	*/
 	
 }
