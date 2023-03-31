@@ -42,7 +42,7 @@ Exemple : [http://localhost:8081/PatientInfo/byId?id=1](http://localhost:8081/Pa
 
 **To get a patient by his Last name and First name :**<br>
 http://localhost:8081/PatientInfo/byName<br>
-Exemple : [http://localhost:8081/PatientInfo/byName?family=Last1&&given=First1](http://localhost:8081/PatientInfo/byName?family=Last1&&given=First1)
+Exemple : [http://localhost:8081/PatientInfo/byName?family=TestNone&&given=Test](http://localhost:8081/PatientInfo/byName?family=TestNone&&given=Test)
 
 
 
