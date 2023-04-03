@@ -81,4 +81,33 @@ public class PatientController {
 		return "PatientInfo";
 	}
 	
+	@GetMapping("/PatientUpdate")
+	public String patientUpdatePage(@RequestParam Integer id, Model model){
+		PatientBean patient = patientInfoProxy.getPatientById(id);
+		model.addAttribute("patient",patient);
+		return "PatientUpdate";
+	}
+	
+	@PostMapping("/PatientUpdate")
+	public String PatientUpdateValidation (
+			@RequestParam Integer id,
+			@Valid 
+			@ModelAttribute("patient") PatientBean patient,
+			BindingResult result,
+			Model model)
+	{
+		log.info("Patient Attributes: {}", patient);
+		if (result.hasErrors()) {
+            log.info("BindingResult = {}",result);
+			return "PatientUpdate";
+        }
+		PatientBean patientResult = patientInfoProxy.updatePatient(id, patient);
+		if (patientResult.getId()==null) {
+			String errorMessage = "Sorry, " + patient.getFamily() + " " + patient.getGiven() + " already exist.";
+			model.addAttribute("errorMessage",errorMessage);
+			return "PatientUpdate";
+		}
+		return "redirect:/PatientInfo?id=" + id;
+	}
+	
 }

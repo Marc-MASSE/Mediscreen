@@ -37,7 +37,13 @@ public interface IPatientInfoService {
 	 */
 	Optional<Patient> getPatientByFamilyAndGivenAndDob (String family, String given, String dob);
 	
-	Patient updatePatient(Patient patient);
+	/**
+	 * To update a patient designated by his id.
+	 * @param id : The id of the patient you want to update
+	 * @param patient : New patient data 
+	 * @return The patient updated
+	 */
+	Patient updatePatient(Integer id, Patient patient);
 	
 	Patient createPatient(Patient patient);
 }

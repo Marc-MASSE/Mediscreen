@@ -6,15 +6,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.marc.patientInfo.exceptions.PatientNotFoundException;
 import fr.marc.patientInfo.model.Patient;
 import fr.marc.patientInfo.service.IPatientInfoService;
 
@@ -49,8 +46,8 @@ public class PatientInfoController {
 	
 	/**
 	 * To get the list of patients according to a Last name and First name
-	 * @param family = Last name in the HL7 (Health Level Seven) standard
-	 * @param given = First name in the HL7 (Health Level Seven) standard
+	 * @param family : Last name in the HL7 (Health Level Seven) standard
+	 * @param given : First name in the HL7 (Health Level Seven) standard
 	 * @return the list of patients according to this Last name and First name if exist
 	 */
 	@GetMapping("/PatientInfo/byName")
@@ -62,7 +59,16 @@ public class PatientInfoController {
 	}
 	
 	// TODO Update patient
-	
+	/**
+	 * To update a patient designated by his id.
+	 * @param id : The id of the patient you want to update
+	 * @param patient : New patient data 
+	 * @return The patient updated
+	 */
+	@PostMapping("/PatientInfo/update")
+	public Patient updatePatient (@RequestParam Integer id, @RequestBody Patient patient) {
+		return patientInfoService.updatePatient(id, patient);
+	}
 	
 	@PostMapping("/PatientInfo/add")
 	public Patient createPatient (@RequestBody Patient patient) {

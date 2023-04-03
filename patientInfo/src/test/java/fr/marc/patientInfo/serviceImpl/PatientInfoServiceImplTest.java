@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class PatientInfoServiceImplTest {
 	public void init() {
 		patientInfoService = new PatientInfoServiceImpl(patientInfoRepository);
 		patient1 = Patient.builder()
-				.id(1) // 1L to cast 1 in Long format
+				.id(1)
 				.family("Last1")
 				.given("First1")
 				.dob("2001-01-01")
@@ -50,7 +51,7 @@ public class PatientInfoServiceImplTest {
 				.phone("111111")
 				.build();
 		patient2 = Patient.builder()
-				.id(2) // 1L to cast 1 in Long format
+				.id(2)
 				.family("Last2")
 				.given("First2")
 				.dob("2002-02-02")
@@ -59,7 +60,7 @@ public class PatientInfoServiceImplTest {
 				.phone("222222")
 				.build();
 		patient3 = Patient.builder()
-				.id(3) // 1L to cast 1 in Long format
+				.id(3)
 				.family("Last3")
 				.given("First3")
 				.dob("2003-03-03")
@@ -145,8 +146,78 @@ public class PatientInfoServiceImplTest {
 		}
 	}
 	
-	// TODO updatePatient test
-	
+	@Nested
+	class UpdatePatient {
+		@Test
+		public void success() {
+			Patient updatedPatient = Patient.builder()
+					.id(3)
+					.family("Last3")
+					.given("First3")
+					.dob("2003-03-03")
+					.sex("F")
+					.address("Address4")
+					.phone("444444")
+					.build();
+			when(patientInfoRepository.findById(3))
+				.thenReturn(Optional.of(patient3));
+			when(patientInfoRepository.findFirstByFamilyAndGivenAndDob("Last3","First3","2003-03-03"))
+				.thenReturn(Optional.of(patient3));
+			when(patientInfoRepository.save(patient3))
+				.thenReturn(updatedPatient);
+			Patient returnPatient = patientInfoService.updatePatient(3, updatedPatient);
+			verify(patientInfoRepository).save(patientCaptor.capture());
+			assertThat(patientCaptor.getValue())
+				.isEqualTo(patient3);
+		    assertThat(returnPatient).isEqualTo(updatedPatient);
+			verify(patientInfoRepository).findById(3);
+			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last3","First3","2003-03-03");
+			verify(patientInfoRepository).save(patient3);
+		}
+		
+		@Test
+		public void no_patient_with_this_id_should_return_null() {
+			Patient updatedPatient = Patient.builder()
+					.id(5)
+					.family("Last3")
+					.given("First3")
+					.dob("2003-03-03")
+					.sex("F")
+					.address("Address4")
+					.phone("444444")
+					.build();
+			when(patientInfoRepository.findById(5))
+				.thenReturn(Optional.empty());
+			Patient returnPatient = patientInfoService.updatePatient(5, updatedPatient);
+		    List<Patient> capturedPatients = patientCaptor.getAllValues();
+		    assertThat(capturedPatients).isEmpty();
+		    assertThat(returnPatient).isNull();
+			verify(patientInfoRepository).findById(5);
+		}
+		
+		@Test
+		public void patient_already_exist_should_return_new_patient() {
+			Patient updatedPatient = Patient.builder()
+					.id(3)
+					.family("Last1")
+					.given("First1")
+					.dob("2001-01-01")
+					.sex("F")
+					.address("Address3")
+					.phone("333333")
+					.build();
+			when(patientInfoRepository.findById(3))
+				.thenReturn(Optional.of(patient3));
+			when(patientInfoRepository.findFirstByFamilyAndGivenAndDob("Last1","First1","2001-01-01"))
+				.thenReturn(Optional.of(patient1));
+			Patient returnPatient = patientInfoService.updatePatient(3, updatedPatient);
+		    List<Patient> capturedPatients = patientCaptor.getAllValues();
+			assertThat(capturedPatients).isEmpty();
+		    assertThat(returnPatient).isEqualTo(new Patient());
+			verify(patientInfoRepository).findFirstByFamilyAndGivenAndDob("Last1","First1","2001-01-01");
+			verify(patientInfoRepository).findById(3);
+		}
+	}
 	
 	// TODO createPatient test
 	/*

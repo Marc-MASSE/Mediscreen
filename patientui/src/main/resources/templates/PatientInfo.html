@@ -32,14 +32,14 @@
 
 		<!-- Patient informations -->
 		<div class="row col-md-8 col-xs-12 mx-auto mt-4">
-			<p class="fs-3 text-primary mb-2 border-bottom">Patient informations</p>
+			<p class="fs-3 text-primary mb-2 border-bottom">Patient information</p>
 			<p>
 				<span class="text-primary fw-bold">Last name :&#160;</span>
-				<span th:text="${patient.family}">Last name</span>
+				<span th:text="${patient.family}" style="text-transform: capitalize;">Last name</span>
 			</p>
 			<p>
 				<span class="text-primary fw-bold">Last name :&#160;</span>
-				<span th:text="${patient.given}">First name</span>
+				<span th:text="${patient.given}" style="text-transform: capitalize;">First name</span>
 			</p>
 			<p>
 				<span class="text-primary fw-bold">Birthday :&#160;</span>
@@ -56,6 +56,13 @@
 			<p>
 				<span class="text-primary fw-bold">Phone :&#160;</span>
 				<span th:text="${patient.phone}">Phone</span>
+			</p>
+			<p>
+				<a class="text-white bg-primary rounded mx-auto my-2 p-2" 
+					th:href="@{PatientUpdate(id=${patient.id})}"
+					role="button">
+					Modify
+				</a>
 			</p>
 		</div>
 	</div>
