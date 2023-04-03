@@ -179,9 +179,38 @@ public class PatientControllerTest {
 	        mockMvc.perform(post("/PatientUpdate?id=1")
 	        		.contentType(MediaType.APPLICATION_JSON)
 	        		.content(mapper.writeValueAsString(patient1))
-	        		.flashAttr("patient", patient1)) // 
+	        		.flashAttr("patient", patient1))
 	            .andExpect(status().is(302))
 	            .andExpect(view().name("redirect:/PatientInfo?id=1"));
+		}
+	}
+	
+	@Nested
+	class PatientCreateRequest {
+		@Test
+		public void create_patient5() throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			PatientBean patientToCreate = PatientBean.builder()
+					.family("last5")
+					.given("first5")
+					.dob("2005-05-05")
+					.sex("M")
+					.build();
+			PatientBean patientCreated = PatientBean.builder()
+					.id(5)
+					.family("last5")
+					.given("first5")
+					.dob("2005-05-05")
+					.sex("M")
+					.build();
+			when(patientInfoProxy.createPatient(patientToCreate))
+				.thenReturn(patientCreated);
+	        mockMvc.perform(post("/PatientCreate")
+	        		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(patientToCreate))
+	        		.flashAttr("patient", patientToCreate))
+	            .andExpect(status().is(302))
+	            .andExpect(view().name("redirect:/PatientInfo?id=5"));
 		}
 	}
 	

@@ -109,22 +109,22 @@ public class PatientInfoServiceImpl implements IPatientInfoService {
 		currentPatient.get().setGiven(updatedPatient.getGiven());
 		currentPatient.get().setDob(updatedPatient.getDob());
 		currentPatient.get().setSex(updatedPatient.getSex());
-		if (updatedPatient.getAddress().isEmpty()) {
-			currentPatient.get().setAddress(updatedPatient.getAddress());
-		}
-		if (updatedPatient.getPhone().isEmpty()) {
-			currentPatient.get().setPhone(updatedPatient.getPhone());
-		}
+		currentPatient.get().setAddress(updatedPatient.getAddress());
+		currentPatient.get().setPhone(updatedPatient.getPhone());
 		return patientInfoRepository.save(currentPatient.get());
 	}
 
+	/**
+	 * To create a new patient
+	 * @param patient
+	 * @return The patient created
+	 * 			null if this patient already exist
+	 */
 	@Override
 	public Patient createPatient(Patient patient){
-		// Test if the patient to update already exist
 		Optional<Patient> findingPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(patient.getFamily(),patient.getGiven(), patient.getDob());
-		if (findingPatient.isPresent() && !findingPatient.get().getId().equals(patient.getId())) {
-			log.info("The patient {} {} {} already exist",patient.getFamily(),patient.getGiven(), patient.getDob());
-			throw new PatientNotFoundException("The patient " + patient.getFamily() + " " + patient.getGiven() + " " + patient.getDob() + " already exist");
+		if (findingPatient.isPresent()) {
+			return new Patient();
 		}
 		return patientInfoRepository.save(patient);
 	}
