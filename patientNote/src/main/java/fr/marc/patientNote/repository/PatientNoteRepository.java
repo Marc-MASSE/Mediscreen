@@ -10,6 +10,6 @@ import fr.marc.patientNote.model.Note;
 @Repository
 public interface PatientNoteRepository extends MongoRepository<Note, String> {
 	
-	List<Note> findByPatId(Integer patId);
+	List<Note> findByPatIdOrderByDateDesc(Integer patId);
 
 }

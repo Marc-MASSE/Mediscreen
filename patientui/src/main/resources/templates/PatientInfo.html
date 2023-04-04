@@ -58,10 +58,15 @@
 				<span th:text="${patient.phone}">Phone</span>
 			</p>
 			<p>
-				<a class="text-white bg-primary rounded mx-auto my-2 p-2" 
+				<a class="text-white bg-danger rounded mx-auto my-2 p-2" 
 					th:href="@{PatientUpdate(id=${patient.id})}"
 					role="button">
 					Modify
+				</a>
+				<a class="text-white bg-primary rounded mx-auto my-2 ms-4 p-2" 
+					th:href="@{NoteList(patId=${patient.id})}"
+					role="button">
+					Notes
 				</a>
 			</p>
 		</div>
