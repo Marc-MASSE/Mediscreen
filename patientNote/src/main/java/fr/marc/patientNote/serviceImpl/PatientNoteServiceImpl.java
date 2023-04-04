@@ -41,7 +41,7 @@ public class PatientNoteServiceImpl implements IPatientNoteService {
 			return note;
 		}
 		log.error("There is no note with id = {} ",id);
-		return Optional.empty();
+		return null;
 	}
 
 }
