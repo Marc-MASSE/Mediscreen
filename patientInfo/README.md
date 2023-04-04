@@ -4,6 +4,8 @@ PatientInfo is an API for managing the personal information of a group of patien
 
 It communicate with Patientui API.
 
+PatientInfo use MySQL data base.
+
 
 ### Prerequisites
 
