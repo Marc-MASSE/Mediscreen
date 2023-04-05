@@ -176,13 +176,10 @@ public class PatientControllerTest {
 			ObjectMapper mapper = new ObjectMapper();
 			when(patientInfoProxy.updatePatient(1, patient1))
 				.thenReturn(patient1);
-			String requestBody = mapper.writeValueAsString(patient1); // Debug
-			log.info("Request Body: {}", requestBody); // Debug
 	        mockMvc.perform(post("/PatientUpdate?id=1")
 	        		.contentType(MediaType.APPLICATION_JSON)
 	        		.content(mapper.writeValueAsString(patient1))
-	        		.flashAttr(requestBody, patient1)) // 
-	        	.andDo(print()) // Debug
+	        		.flashAttr("patient", patient1))
 	            .andExpect(status().is(302))
 	            .andExpect(view().name("redirect:/PatientInfo?id=1"));
 		}
@@ -208,13 +205,12 @@ public class PatientControllerTest {
 					.build();
 			when(patientInfoProxy.createPatient(patientToCreate))
 				.thenReturn(patientCreated);
-			String requestBody = mapper.writeValueAsString(patientToCreate); // Debug
-			log.info("Request Body: {}", requestBody); // Debug
-	        mockMvc.perform(post("/PatientCreate")
-	        		.contentType(MediaType.APPLICATION_JSON)
-	        		.content(mapper.writeValueAsString(patientToCreate)))
-	            .andExpect(status().is(302))
-	            .andExpect(view().name("redirect:/PatientInfo?id=5"));
+	    mockMvc.perform(post("/PatientCreate")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(mapper.writeValueAsString(patientToCreate))
+          .flashAttr("patient", patientToCreate))
+        .andExpect(status().is(302))
+        .andExpect(view().name("redirect:/PatientInfo?id=5"));
 		}
 	}
 	
