@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.marc.patientui.beans.NoteBean;
 import fr.marc.patientui.proxies.PatientNoteProxy;
 
 @Controller
@@ -28,6 +29,13 @@ public class NoteController {
 		model.addAttribute("notes", patientNoteProxy.getNotesByPatientId(patId));
 		model.addAttribute("patientId",patId);
 		return "NoteList";
+	}
+	
+	@GetMapping("/NoteUpdate")
+	public String noteUpdatePage(@RequestParam String id, Model model){
+		NoteBean note = patientNoteProxy.getNoteById(id).get();
+		model.addAttribute("note",note);
+		return "NoteUpdate";
 	}
 
 }

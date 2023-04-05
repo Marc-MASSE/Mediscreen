@@ -1,6 +1,5 @@
 package fr.marc.patientui.proxies;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,4 +19,7 @@ public interface PatientNoteProxy {
 	
 	@GetMapping("/PatientNote/byId")
 	public Optional<NoteBean> getNoteById (@RequestParam String id);
+	
+	@PostMapping("/PatientNote/update")
+	public NoteBean updateNote (@RequestParam String id,@RequestBody NoteBean note);
 }
