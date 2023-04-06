@@ -77,7 +77,12 @@ public class PatientController {
 	
 	@GetMapping("/PatientUpdate")
 	public String patientUpdatePage(@RequestParam Integer id, Model model){
-		PatientBean patient = patientInfoProxy.getPatientById(id);
+		PatientBean patient;
+		try {
+			patient = patientInfoProxy.getPatientById(id);
+		} catch (Exception e) {
+			patient = new PatientBean();
+		}
 		model.addAttribute("patient",patient);
 		return "PatientUpdate";
 	}

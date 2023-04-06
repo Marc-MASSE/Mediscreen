@@ -183,6 +183,32 @@ public class PatientControllerTest {
 	            .andExpect(status().is(302))
 	            .andExpect(view().name("redirect:/PatientInfo?id=1"));
 		}
+		
+		@Test
+		public void no_patient_with_this_id() throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			when(patientInfoProxy.updatePatient(15, patient1))
+				.thenReturn(new PatientBean());
+	        mockMvc.perform(post("/PatientUpdate?id=15")
+	        		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(patient1))
+	        		.flashAttr("patient", patient1))
+	            .andExpect(status().isOk())
+	            .andExpect(view().name("PatientUpdate"));
+		}
+		
+		@Test
+		public void this_patient_already_exist() throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			when(patientInfoProxy.updatePatient(1, patient2))
+				.thenReturn(new PatientBean());
+	        mockMvc.perform(post("/PatientUpdate?id=1")
+	        		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(patient2))
+	        		.flashAttr("patient", patient2))
+	            .andExpect(status().isOk())
+	            .andExpect(view().name("PatientUpdate"));
+		}
 	}
 	
 	@Nested
