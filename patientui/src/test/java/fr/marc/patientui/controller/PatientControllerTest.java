@@ -205,12 +205,12 @@ public class PatientControllerTest {
 					.build();
 			when(patientInfoProxy.createPatient(patientToCreate))
 				.thenReturn(patientCreated);
-	        mockMvc.perform(post("/PatientCreate")
-	        		.contentType(MediaType.APPLICATION_JSON)
-	        		.content(mapper.writeValueAsString(patientToCreate))
-	        		.flashAttr("patient", patientToCreate))
-	            .andExpect(status().is(302))
-	            .andExpect(view().name("redirect:/PatientInfo?id=5"));
+	    mockMvc.perform(post("/PatientCreate")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(mapper.writeValueAsString(patientToCreate))
+          .flashAttr("patient", patientToCreate))
+        .andExpect(status().is(302))
+        .andExpect(view().name("redirect:/PatientInfo?id=5"));
 		}
 	}
 	
