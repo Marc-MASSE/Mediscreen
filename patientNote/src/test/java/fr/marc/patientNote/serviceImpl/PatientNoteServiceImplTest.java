@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -94,6 +95,45 @@ public class PatientNoteServiceImplTest {
 				.isNull();
 			verify(patientNoteRepository).findById("15");
 		}
+	}
+	
+	@Nested
+	class UpdateNote {
+		@Test
+		public void success() {
+			Note updatedNote = Note.builder()
+					.id("2")
+					.patId(1)
+					.date(LocalDateTime.of(2023, 4, 2, 0, 0, 0))
+					.body("Body updated")
+					.build();
+			when(patientNoteRepository.findById("2"))
+				.thenReturn(Optional.of(note2));
+			when(patientNoteRepository.save(note2))
+				.thenReturn(updatedNote);
+			Note returnNote = patientNoteService.updateNote("2", updatedNote);
+			verify(patientNoteRepository).save(noteCaptor.capture());
+			assertThat(noteCaptor.getValue()).isEqualTo(note2);
+			assertThat(returnNote).isEqualTo(updatedNote);
+			verify(patientNoteRepository).findById("2");
+			verify(patientNoteRepository).save(note2);
+		}
+		
+		@Test
+		public void no_note_with_this_id_should_return_null() {
+			Note updatedNote = Note.builder()
+					.id("5")
+					.patId(1)
+					.date(LocalDateTime.of(2023, 4, 2, 0, 0, 0))
+					.body("Body updated")
+					.build();
+			when(patientNoteRepository.findById("5"))
+				.thenReturn(Optional.empty());
+			Note returnNote = patientNoteService.updateNote("5", updatedNote);
+			assertThat(returnNote).isNull();
+			verify(patientNoteRepository).findById("5");
+		}
+		
 	}
 
 }
