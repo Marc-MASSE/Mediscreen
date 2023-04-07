@@ -1,10 +1,6 @@
 package fr.marc.patientui.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.marc.patientui.beans.PatientBean;
@@ -28,7 +23,6 @@ public class PatientController {
 	private final PatientInfoProxy patientInfoProxy;
 	
 	public PatientController(PatientInfoProxy patientInfoProxy) {
-		super();
 		this.patientInfoProxy = patientInfoProxy;
 	}
 
