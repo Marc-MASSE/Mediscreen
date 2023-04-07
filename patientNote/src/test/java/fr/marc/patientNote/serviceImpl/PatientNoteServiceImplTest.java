@@ -1,6 +1,7 @@
 package fr.marc.patientNote.serviceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -133,7 +134,29 @@ public class PatientNoteServiceImplTest {
 			assertThat(returnNote).isNull();
 			verify(patientNoteRepository).findById("5");
 		}
-		
+	}
+	
+	@Nested
+	class CreateNote {
+		@Test
+		public void success() {
+			Note newBody = Note.builder()
+					.body("Body created")
+					.build();
+			Note createdNote = Note.builder()
+					.id("1")
+					.patId(1)
+					.date(LocalDateTime.now())
+					.body("Body created")
+					.build();
+			when(patientNoteRepository.save(any(Note.class)))
+				.thenReturn(createdNote);
+			Note returnNote = patientNoteService.createNote(1, newBody);
+			verify(patientNoteRepository).save(noteCaptor.capture());
+			assertThat(noteCaptor.getValue().getPatId()).isEqualTo(1);
+			assertThat(noteCaptor.getValue().getBody()).isEqualTo("Body created");
+			assertThat(returnNote).isEqualTo(createdNote);
+		}
 	}
 
 }

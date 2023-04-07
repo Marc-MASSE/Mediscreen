@@ -107,5 +107,31 @@ public class NoteControllerTest {
 	            .andExpect(view().name("redirect:/NoteList?patId=1"));
 		}
 	}
+	
+	@Nested
+	class NoteCreateRequest {
+		@Test
+		public void create_note() throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			NoteBean newBody = NoteBean.builder()
+					.body("New body")
+					.build();
+			NoteBean createdNote = NoteBean.builder()
+					.id("3")
+					.patId(1)
+					.date(LocalDateTime.of(2023, 4, 3, 0, 0, 0))
+					.body("New body")
+					.build();
+			when(patientNoteProxy.createNote(1, newBody))
+				.thenReturn(createdNote);
+	        mockMvc.perform(post("/NoteCreate?patId=1")
+	        		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(newBody))
+	        		.flashAttr("note", newBody))
+	            .andExpect(status().is(302))
+	            .andExpect(view().name("redirect:/NoteList?patId=1"));
+		}
+	}
+
 
 }

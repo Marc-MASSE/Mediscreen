@@ -112,5 +112,23 @@ public class PatientNoteControllerTest {
 				.isEqualTo("");
 		}
 	}
+	
+	// POST /PatientInfo/add
+	@Nested
+	class CreateNote {
+		@Test
+		public void success () throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			Note createdNote = Note.builder()
+					.body("New body")
+					.build();
+			mockMvc.perform(post("/PatientNote/create?patId=4")
+		       		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(createdNote)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.patId", is(4)))
+				.andExpect(jsonPath("$.body", is("New body")));
+		}
+	}
 
 }
