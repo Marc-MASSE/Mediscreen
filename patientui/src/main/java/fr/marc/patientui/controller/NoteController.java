@@ -56,5 +56,23 @@ public class NoteController {
 		return "redirect:/NoteList?patId=" + updatedNote.getPatId();
 	}
 	
+	@GetMapping("/NoteCreate")
+	public String noteCreatePage(@RequestParam Integer patId, Model model){
+		NoteBean note = new NoteBean();
+		model.addAttribute("note",note);
+		PatientBean patient = patientInfoProxy.getPatientById(patId);
+		model.addAttribute("patient", patient);
+		return "NoteCreate";
+	}
+	
+	@PostMapping("/NoteCreate")
+	public String noteCreateValidation(
+			@RequestParam Integer patId,
+			@ModelAttribute("note") NoteBean note)
+	{
+		patientNoteProxy.createNote(patId, note);
+		return "redirect:/NoteList?patId=" + patId.toString();
+	}
+	
 
 }

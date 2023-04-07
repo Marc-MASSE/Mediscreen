@@ -28,4 +28,12 @@ public interface IPatientNoteService {
 	 */
 	Note updateNote(String id, Note note);
 	
+	/**
+	 * To create a new note
+	 * @param id : The id of the patient for whom we want to create a note
+	 * @param note : The note containing the body we want to create
+	 * @return The note created
+	 */
+	Note createNote(Integer patId,Note note);
+	
 }
