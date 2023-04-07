@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.marc.patientui.beans.NoteBean;
 
-
 @FeignClient(name = "mediscreen-patientNote", url = "localhost:8082")
 public interface PatientNoteProxy {
 	
@@ -22,4 +21,7 @@ public interface PatientNoteProxy {
 	
 	@PostMapping("/PatientNote/update")
 	public NoteBean updateNote (@RequestParam String id,@RequestBody NoteBean note);
+	
+	@PostMapping("/PatientNote/create")
+	public NoteBean createNote (@RequestParam Integer patId,@RequestBody NoteBean note);
 }
