@@ -85,7 +85,7 @@ public class PatientNoteControllerTest {
 		@Test
 		public void body_updated() throws Exception{
 			ObjectMapper mapper = new ObjectMapper();
-			List<Note> notes = patientNoteRepository.findByPatIdOrderByDateDesc(1);
+			List<Note> notes = patientNoteRepository.findByPatIdOrderByDateDesc(3);
 			Note updatedNote = Note.builder()
 					.body("Body updated")
 					.build();
