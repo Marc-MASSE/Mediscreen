@@ -55,6 +55,7 @@ public class PatientNoteController {
 			@RequestParam String id,
 			@RequestBody Note note)
 	{
+		log.info("Update note with id = {}",id);
 		return patientNoteService.updateNote(id, note);
 	}
 	
@@ -63,6 +64,7 @@ public class PatientNoteController {
 			@RequestParam Integer patId,
 			@RequestBody Note note)
 	{
+		log.info("Create note {} for patient with id = {}",note, patId);
 		return patientNoteService.createNote(patId, note);
 	}
 }
