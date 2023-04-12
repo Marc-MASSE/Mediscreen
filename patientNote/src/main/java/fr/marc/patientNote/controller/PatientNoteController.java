@@ -58,4 +58,11 @@ public class PatientNoteController {
 		return patientNoteService.updateNote(id, note);
 	}
 	
+	@PostMapping("/PatientNote/create")
+	public Note createNote (
+			@RequestParam Integer patId,
+			@RequestBody Note note)
+	{
+		return patientNoteService.createNote(patId, note);
+	}
 }

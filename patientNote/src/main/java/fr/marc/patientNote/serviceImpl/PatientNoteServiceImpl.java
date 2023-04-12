@@ -1,5 +1,6 @@
 package fr.marc.patientNote.serviceImpl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +71,22 @@ public class PatientNoteServiceImpl implements IPatientNoteService {
 		}
 		currentNote.get().setBody(note.getBody());
 		return patientNoteRepository.save(currentNote.get());
+	}
+
+	/**
+	 * To create a new note
+	 * @param id : The id of the patient for whom we want to create a note
+	 * @param note : The note containing the body we want to create
+	 * @return The note created
+	 */
+	@Override
+	public Note createNote(Integer patId, Note note) {
+		Note creatingNote = Note.builder()
+				.patId(patId)
+				.date(LocalDateTime.now())
+				.body(note.getBody())
+				.build();
+		return patientNoteRepository.save(creatingNote);
 	}
 
 }
