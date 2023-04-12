@@ -85,7 +85,7 @@ public class PatientNoteControllerTest {
 		@Test
 		public void body_updated() throws Exception{
 			ObjectMapper mapper = new ObjectMapper();
-			List<Note> notes = patientNoteRepository.findByPatIdOrderByDateDesc(1);
+			List<Note> notes = patientNoteRepository.findByPatIdOrderByDateDesc(3);
 			Note updatedNote = Note.builder()
 					.body("Body updated")
 					.build();
@@ -110,6 +110,24 @@ public class PatientNoteControllerTest {
 				.andReturn();
 			assertThat(result.getResponse().getContentAsString())
 				.isEqualTo("");
+		}
+	}
+	
+	// POST /PatientInfo/add
+	@Nested
+	class CreateNote {
+		@Test
+		public void success () throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			Note createdNote = Note.builder()
+					.body("New body")
+					.build();
+			mockMvc.perform(post("/PatientNote/create?patId=4")
+		       		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(createdNote)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.patId", is(4)))
+				.andExpect(jsonPath("$.body", is("New body")));
 		}
 	}
 

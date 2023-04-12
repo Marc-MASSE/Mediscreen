@@ -55,6 +55,7 @@ public class PatientInfoController {
 			@RequestParam String family,
 			@RequestParam String given)
 	{
+		log.info("Get the patient {} {}",family, given);
 		return patientInfoService.getPatientsByFamilyAndGiven(family, given);
 	}
 	
@@ -69,6 +70,7 @@ public class PatientInfoController {
 			@RequestParam Integer id, 
 			@RequestBody Patient patient) 
 	{
+		log.info("Update the patient with id = {}",id);
 		return patientInfoService.updatePatient(id, patient);
 	}
 	
@@ -79,6 +81,7 @@ public class PatientInfoController {
 	 */
 	@PostMapping("/PatientInfo/add")
 	public Patient createPatient (@RequestBody Patient patient) {
+		log.info("Create the patient {}", patient);
 		return patientInfoService.createPatient(patient);
 	}
 }

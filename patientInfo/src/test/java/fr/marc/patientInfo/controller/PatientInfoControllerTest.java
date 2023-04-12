@@ -62,7 +62,7 @@ public class PatientInfoControllerTest {
 		
 		@Test
 		public void no_patient () throws Exception {
-			mockMvc.perform(get("/PatientInfo/byId?id=5"))
+			mockMvc.perform(get("/PatientInfo/byId?id=999"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.family").doesNotExist());
 		}
@@ -145,12 +145,32 @@ public class PatientInfoControllerTest {
 	        		.content(mapper.writeValueAsString(updatedPatient)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", nullValue()));
-
 		}
 	}
 	
 	
-	// TODO POST /PatientInfo/add
-	
+	// POST /PatientInfo/add
+	@Nested
+	class CreatePatient {
+		@Test
+		public void success () throws Exception {
+			ObjectMapper mapper = new ObjectMapper();
+			Patient createdPatient = Patient.builder()
+					.family("ZewPatient")
+					.given("test")
+					.dob("1966-12-31")
+					.sex("F")
+					.address("Address")
+					.phone("Phone")
+					.build();
+			mockMvc.perform(post("/PatientInfo/add")
+		       		.contentType(MediaType.APPLICATION_JSON)
+	        		.content(mapper.writeValueAsString(createdPatient)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.family", is("ZewPatient")))
+				.andExpect(jsonPath("$.address", is("Address")))
+				.andExpect(jsonPath("$.phone", is("Phone")));
+		}
+	}
 
 }

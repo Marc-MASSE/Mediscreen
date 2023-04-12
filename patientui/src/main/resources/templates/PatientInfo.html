@@ -73,6 +73,18 @@
 				</a>
 			</p>
 		</div>
+		<!-- Patient informations -->
+		<div class="row col-md-8 col-xs-12 mx-auto mt-4">
+			<div class="d-flex flex-row border border-primary">
+				<span th:text="${patient.family}" style="text-transform: capitalize;" class="me-1">Last name</span>
+				<span th:text="${patient.given}" style="text-transform: capitalize;">First name</span>
+				<span>&#160;(age&#160;</span>
+				<span th:text="${report.age}">age</span>
+				<span>)&#160;</span>
+				<span>diabetes assessment is :&#160;</span>
+				<span th:text="${report.assessment}" class="bg-warning">assessment</span>
+			</div>
+		</div>
 	</div>
 
 	<!-- Bootstrap JS bundle -->

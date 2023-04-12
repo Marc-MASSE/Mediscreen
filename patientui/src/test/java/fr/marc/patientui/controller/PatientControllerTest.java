@@ -26,9 +26,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.marc.patientui.beans.NoteBean;
+import fr.marc.patientui.beans.PatientAndNotesBean;
 import fr.marc.patientui.beans.PatientBean;
 import fr.marc.patientui.beans.PatientBeanDTO;
+import fr.marc.patientui.beans.ReportBean;
 import fr.marc.patientui.proxies.PatientInfoProxy;
+import fr.marc.patientui.proxies.PatientNoteProxy;
+import fr.marc.patientui.proxies.PatientReportProxy;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,6 +47,12 @@ public class PatientControllerTest {
 	   
 	@MockBean
 	private PatientInfoProxy patientInfoProxy;
+	
+	@MockBean
+	private PatientNoteProxy patientNoteProxy;
+	
+	@MockBean
+	private PatientReportProxy patientReportProxy;
 	
 	private static final Logger log = LoggerFactory.getLogger(PatientControllerTest.class); 
 	private PatientBean patient1;
@@ -147,14 +158,29 @@ public class PatientControllerTest {
 	
 	@Test
 	public void displayPatientInfoPage() throws Exception {
+		List<NoteBean> notes = new ArrayList<>();
+		PatientAndNotesBean patientAndNotes = PatientAndNotesBean.builder()
+				.patient(patient1)
+				.notes(notes)
+				.build();
+		ReportBean report = ReportBean.builder()
+				.age(33)
+				.assessment("None")
+				.build();
 		when(patientInfoProxy.getPatientById(1))
 			.thenReturn(patient1);
+		when(patientNoteProxy.getNotesByPatientId(1))
+			.thenReturn(notes);
+		when(patientReportProxy.getReport(patientAndNotes))
+			.thenReturn(report);
 		mockMvc.perform(get("/PatientInfo?id=1"))
         	.andExpect(status().isOk())
         	.andExpect(view().name("PatientInfo"))
         	.andExpect(content().string(containsString("Patient information")))
         	.andExpect(content().string(containsString("last1")))
-        	.andExpect(content().string(containsString("first1")));
+        	.andExpect(content().string(containsString("first1")))
+        	.andExpect(content().string(containsString("33")))
+        	.andExpect(content().string(containsString("None")));
 	}
 	
 	@Test

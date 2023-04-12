@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.marc.patientui.beans.NoteBean;
+import fr.marc.patientui.beans.PatientAndNotesBean;
 import fr.marc.patientui.beans.PatientBean;
 import fr.marc.patientui.beans.PatientBeanDTO;
+import fr.marc.patientui.beans.ReportBean;
 import fr.marc.patientui.proxies.PatientInfoProxy;
+import fr.marc.patientui.proxies.PatientNoteProxy;
+import fr.marc.patientui.proxies.PatientReportProxy;
 import jakarta.validation.Valid;
 
 @Controller
@@ -21,9 +26,16 @@ public class PatientController {
 	
 	private static final Logger log = LoggerFactory.getLogger(PatientController.class); 
 	private final PatientInfoProxy patientInfoProxy;
+	private final PatientNoteProxy patientNoteProxy;
+	private final PatientReportProxy patientReportProxy;
 	
-	public PatientController(PatientInfoProxy patientInfoProxy) {
+	public PatientController(
+			PatientInfoProxy patientInfoProxy, 
+			PatientNoteProxy patientNoteProxy, 
+			PatientReportProxy patientReportProxy) {
 		this.patientInfoProxy = patientInfoProxy;
+		this.patientNoteProxy = patientNoteProxy;
+		this.patientReportProxy = patientReportProxy;
 	}
 
 	@GetMapping("/")
@@ -72,6 +84,11 @@ public class PatientController {
 	public String patientInfoPage(@RequestParam Integer id, Model model){
 		PatientBean patient = patientInfoProxy.getPatientById(id);
 		model.addAttribute("patient",patient);
+		PatientAndNotesBean patientAndNotes = PatientAndNotesBean.builder()
+				.patient(patient)
+				.notes(patientNoteProxy.getNotesByPatientId(id))
+				.build();
+		model.addAttribute("report",patientReportProxy.getReport(patientAndNotes));
 		return "PatientInfo";
 	}
 	
