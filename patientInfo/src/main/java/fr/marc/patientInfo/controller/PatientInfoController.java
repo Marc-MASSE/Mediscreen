@@ -81,7 +81,7 @@ public class PatientInfoController {
 	 */
 	@PostMapping("/PatientInfo/add")
 	public Patient createPatient (@RequestBody Patient patient) {
-		log.info("Create the patient {}",patient);
+		log.info("Create the patient {}", patient);
 		return patientInfoService.createPatient(patient);
 	}
 }
