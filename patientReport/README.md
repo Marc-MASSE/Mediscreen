@@ -1,10 +1,10 @@
-# PatienNote
+# PatienReport
 
-PatientNote is an API for managing the personal notes of a group of patients.
+PatientReport is an API that calculates a patient's risk of having diabetes based on age, gender, and terms used in their doctor's notes.
 
 It communicate with Patientui API.
 
-PatientNote use MongoDB data base.
+PatientNote use MySQL data base that contains trigger terms to look for in the doctor's notes.
 
 
 ### Prerequisites
@@ -15,7 +15,7 @@ What things you need to install the software and how to install them
 - Java 17
 - Maven 4.0.0
 - Lombok 1.18.26
-- MogoDB 4.8.2
+- MySQL 8.0.32
 
 ### Installing
 
@@ -36,13 +36,13 @@ https://projectlombok.org/download
 
 ## Endpoints examples
 
-**To get the notes of a patient identified by his id :**<br>
-http://localhost:8082/PatientNote/byPatient<br>
-Exemple : [http://localhost:8082/PatientNote/byPatient?patId=1](http://localhost:8082/PatientNote/byPatient?patId=1)
+**To get a patient's age and risk of having diabetes :**<br>
+http://localhost:8083/PatientReport
+
 
 ## Swagger documentation
 
-[http://localhost:8082/swagger-ui/index.html#/](http://localhost:8082/swagger-ui/index.html#/)
+[http://localhost:8083/swagger-ui/index.html#/](http://localhost:8083/swagger-ui/index.html#/)
 
 
 
