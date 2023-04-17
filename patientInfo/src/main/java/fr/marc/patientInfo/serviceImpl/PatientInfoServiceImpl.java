@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import fr.marc.patientInfo.exceptions.PatientNotFoundException;
 import fr.marc.patientInfo.model.Patient;
 import fr.marc.patientInfo.repository.PatientInfoRepository;
 import fr.marc.patientInfo.service.IPatientInfoService;
