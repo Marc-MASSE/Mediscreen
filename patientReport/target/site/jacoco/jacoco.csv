@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+patientReport,fr.marc.patientReport.controller,PatientReportController,17,7,0,0,5,2,1,2,1,2
+patientReport,fr.marc.patientReport.serviceImpl,PatientReportServiceImpl,0,171,5,33,0,34,5,19,0,5
+patientReport,fr.marc.patientReport,PatientReportApplication,5,3,0,0,2,1,1,1,1,1

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientNoteController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patientNote</a> &gt; <a href="index.source.html" class="el_package">fr.marc.patientNote.controller</a> &gt; <span class="el_source">PatientNoteController.java</span></div><h1>PatientNoteController.java</h1><pre class="source lang-java linenums">package fr.marc.patientNote.controller;
+
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.marc.patientNote.model.Note;
+import fr.marc.patientNote.service.IPatientNoteService;
+
+@RestController
+<span class="fc" id="L18">public class PatientNoteController {</span>
+	
+<span class="fc" id="L20">	private static final Logger log = LoggerFactory.getLogger(PatientNoteController.class); </span>
+
+	@Autowired
+	private IPatientNoteService patientNoteService;
+	
+	/**
+	 * To collect all notes of a patient identified by his id
+	 * @param patId : The patient id
+	 * @return All notes of a patient identified by his id
+	 */
+	@GetMapping(&quot;/PatientNote/byPatient&quot;)
+	public Iterable&lt;Note&gt; getNotesByPatientId (@RequestParam Integer patId){
+<span class="fc" id="L32">		log.info(&quot;Get notes fore patient with id = {}&quot;,patId);</span>
+<span class="fc" id="L33">		return patientNoteService.getNotesByPatientId(patId);</span>
+	}
+	
+	/**
+	 * To get the note identified by its id
+	 * @param id : The note id
+	 * @return The note identified by its id
+	 */
+	@GetMapping(&quot;/PatientNote/byId&quot;)
+	public Optional&lt;Note&gt; getNoteById (@RequestParam String id){
+<span class="fc" id="L43">		log.info(&quot;Get note with id = {}&quot;,id);</span>
+<span class="fc" id="L44">		return patientNoteService.getNoteById(id);</span>
+	}
+	
+	/**
+	 * To update the note identified by its id
+	 * @param id : The note id
+	 * @param note
+	 * @return The updated note
+	 */
+	@PostMapping(&quot;/PatientNote/update&quot;)
+	public Note updateNote (
+			@RequestParam String id,
+			@RequestBody Note note)
+	{
+<span class="fc" id="L58">		log.info(&quot;Update note with id = {}&quot;,id);</span>
+<span class="fc" id="L59">		return patientNoteService.updateNote(id, note);</span>
+	}
+	
+	@PostMapping(&quot;/PatientNote/create&quot;)
+	public Note createNote (
+			@RequestParam Integer patId,
+			@RequestBody Note note)
+	{
+<span class="fc" id="L67">		log.info(&quot;Create note {} for patient with id = {}&quot;,note, patId);</span>
+<span class="fc" id="L68">		return patientNoteService.createNote(patId, note);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

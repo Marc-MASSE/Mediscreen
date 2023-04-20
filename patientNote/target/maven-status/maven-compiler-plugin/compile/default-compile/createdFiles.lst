@@ -1,0 +1,8 @@
+fr\marc\patientNote\model\Note.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImpl.class
+fr\marc\patientNote\model\Note$NoteBuilder.class
+fr\marc\patientNote\service\IPatientNoteService.class
+fr\marc\patientNote\PatientNoteApplication.class
+fr\marc\patientNote\repository\PatientNoteRepository.class
+fr\marc\patientNote\controller\PatientNoteController.class
+fr\marc\patientNote\data\PatientNoteData.class

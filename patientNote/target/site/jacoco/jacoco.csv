@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+patientNote,fr.marc.patientNote,PatientNoteApplication,5,63,0,4,2,17,1,4,1,2
+patientNote,fr.marc.patientNote.controller,PatientNoteController,0,46,0,0,0,10,0,6,0,6
+patientNote,fr.marc.patientNote.serviceImpl,PatientNoteServiceImpl,0,88,0,6,0,26,0,9,0,6
+patientNote,fr.marc.patientNote.data,PatientNoteData,0,160,0,0,0,12,0,2,0,2

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patientui</a> &gt; <a href="index.source.html" class="el_package">fr.marc.patientui.controller</a> &gt; <span class="el_source">PatientController.java</span></div><h1>PatientController.java</h1><pre class="source lang-java linenums">package fr.marc.patientui.controller;
+
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import fr.marc.patientui.beans.NoteBean;
+import fr.marc.patientui.beans.PatientAndNotesBean;
+import fr.marc.patientui.beans.PatientBean;
+import fr.marc.patientui.beans.PatientBeanDTO;
+import fr.marc.patientui.beans.ReportBean;
+import fr.marc.patientui.proxies.PatientInfoProxy;
+import fr.marc.patientui.proxies.PatientNoteProxy;
+import fr.marc.patientui.proxies.PatientReportProxy;
+import jakarta.validation.Valid;
+
+@Controller
+public class PatientController {
+	
+<span class="fc" id="L27">	private static final Logger log = LoggerFactory.getLogger(PatientController.class); </span>
+	private final PatientInfoProxy patientInfoProxy;
+	private final PatientNoteProxy patientNoteProxy;
+	private final PatientReportProxy patientReportProxy;
+	
+	public PatientController(
+			PatientInfoProxy patientInfoProxy, 
+			PatientNoteProxy patientNoteProxy, 
+<span class="fc" id="L35">			PatientReportProxy patientReportProxy) {</span>
+<span class="fc" id="L36">		this.patientInfoProxy = patientInfoProxy;</span>
+<span class="fc" id="L37">		this.patientNoteProxy = patientNoteProxy;</span>
+<span class="fc" id="L38">		this.patientReportProxy = patientReportProxy;</span>
+<span class="fc" id="L39">	}</span>
+
+	@GetMapping(&quot;/&quot;)
+	public String home() {
+<span class="fc" id="L43">		return &quot;Home&quot;;</span>
+	}
+	
+	@GetMapping(&quot;/PatientList&quot;)
+	public String patientListPage(Model model){
+<span class="fc" id="L48">		List&lt;PatientBean&gt; patients =  patientInfoProxy.getPatients();</span>
+<span class="fc" id="L49">	    model.addAttribute(&quot;patients&quot;, patients);</span>
+<span class="fc" id="L50">		return &quot;PatientList&quot;;</span>
+	}
+	
+	@GetMapping(&quot;/PatientSearch&quot;)
+	public String patientSearchPage(
+			@RequestParam (name=&quot;family&quot;, defaultValue=&quot;&quot;) String family,
+			@RequestParam (name=&quot;given&quot;, defaultValue=&quot;&quot;) String given,
+			@ModelAttribute PatientBean patientBean,
+			Model model)
+	{
+<span class="fc" id="L60">		List&lt;PatientBean&gt; patients = patientInfoProxy.getPatientsByFamilyAndGiven(family, given);</span>
+<span class="fc" id="L61">		model.addAttribute(&quot;patients&quot;,patients);</span>
+
+<span class="pc bpc" id="L63" title="1 of 6 branches missed.">		if (patients.isEmpty() &amp;&amp; !family.isEmpty() &amp;&amp; !given.isEmpty()) {</span>
+<span class="fc" id="L64">			String errorMessage = &quot;Sorry, &quot; + family + &quot; &quot; + given + &quot; is not registered.&quot;;</span>
+<span class="fc" id="L65">			model.addAttribute(&quot;errorMessage&quot;,errorMessage);</span>
+		}
+<span class="fc" id="L67">		return &quot;PatientSearch&quot;;</span>
+	}
+	
+	@PostMapping(&quot;/PatientSearch&quot;)
+	public String PatientResearch (
+			@Valid 
+			@ModelAttribute(&quot;patientBean&quot;) PatientBeanDTO patientBean,
+			BindingResult result)
+	{
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (result.hasErrors()) {</span>
+<span class="fc" id="L77">            log.info(&quot;BindingResult = {}&quot;,result);</span>
+<span class="fc" id="L78">			return &quot;PatientSearch&quot;;</span>
+        }
+<span class="nc" id="L80">		return &quot;redirect:/PatientSearch?family=&quot; + patientBean.getFamily() + &quot;&amp;&amp;given=&quot; + patientBean.getGiven();</span>
+	}
+	
+	@GetMapping(&quot;/PatientInfo&quot;)
+	public String patientInfoPage(@RequestParam Integer id, Model model){
+<span class="fc" id="L85">		PatientBean patient = patientInfoProxy.getPatientById(id);</span>
+<span class="fc" id="L86">		model.addAttribute(&quot;patient&quot;,patient);</span>
+<span class="fc" id="L87">		PatientAndNotesBean patientAndNotes = PatientAndNotesBean.builder()</span>
+<span class="fc" id="L88">				.patient(patient)</span>
+<span class="fc" id="L89">				.notes(patientNoteProxy.getNotesByPatientId(id))</span>
+<span class="fc" id="L90">				.build();</span>
+<span class="fc" id="L91">		model.addAttribute(&quot;report&quot;,patientReportProxy.getReport(patientAndNotes));</span>
+<span class="fc" id="L92">		return &quot;PatientInfo&quot;;</span>
+	}
+	
+	@GetMapping(&quot;/PatientUpdate&quot;)
+	public String patientUpdatePage(@RequestParam Integer id, Model model){
+		PatientBean patient;
+		try {
+<span class="fc" id="L99">			patient = patientInfoProxy.getPatientById(id);</span>
+<span class="nc" id="L100">		} catch (Exception e) {</span>
+<span class="nc" id="L101">			patient = new PatientBean();</span>
+<span class="fc" id="L102">		}</span>
+<span class="fc" id="L103">		model.addAttribute(&quot;patient&quot;,patient);</span>
+<span class="fc" id="L104">		return &quot;PatientUpdate&quot;;</span>
+	}
+	
+	@PostMapping(&quot;/PatientUpdate&quot;)
+	public String PatientUpdateValidation (
+			@RequestParam Integer id,
+			@Valid 
+			@ModelAttribute(&quot;patient&quot;) PatientBean patient,
+			BindingResult result,
+			Model model)
+	{
+<span class="fc" id="L115">		log.info(&quot;Patient Attributes: {}&quot;, patient);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (result.hasErrors()) {</span>
+<span class="nc" id="L117">            log.info(&quot;BindingResult = {}&quot;,result);</span>
+<span class="nc" id="L118">			return &quot;PatientUpdate&quot;;</span>
+        }
+<span class="fc" id="L120">		PatientBean patientResult = patientInfoProxy.updatePatient(id, patient);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		if (patientResult.getId()==null) {</span>
+<span class="fc" id="L122">			String errorMessage = &quot;Sorry, &quot; + patient.getFamily() + &quot; &quot; + patient.getGiven() + &quot; already exist.&quot;;</span>
+<span class="fc" id="L123">			model.addAttribute(&quot;errorMessage&quot;,errorMessage);</span>
+<span class="fc" id="L124">			return &quot;PatientUpdate&quot;;</span>
+		}
+<span class="fc" id="L126">		return &quot;redirect:/PatientInfo?id=&quot; + id;</span>
+	}
+	
+	@GetMapping(&quot;/PatientCreate&quot;)
+	public String patientCreatePage(Model model){
+<span class="nc" id="L131">		PatientBean patient = new PatientBean();</span>
+<span class="nc" id="L132">		model.addAttribute(&quot;patient&quot;,patient);</span>
+<span class="nc" id="L133">		return &quot;PatientCreate&quot;;</span>
+	}
+	
+	@PostMapping(&quot;/PatientCreate&quot;)
+	public String PatientCreateValidation (
+			@Valid 
+			@ModelAttribute(&quot;patient&quot;) PatientBean patient,
+			BindingResult result,
+			Model model)
+	{
+<span class="fc" id="L143">		log.info(&quot;Patient Attributes: {}&quot;, patient);</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (result.hasErrors()) {</span>
+<span class="nc" id="L145">            log.info(&quot;BindingResult = {}&quot;,result);</span>
+<span class="nc" id="L146">			return &quot;PatientCreate&quot;;</span>
+        }
+<span class="fc" id="L148">		PatientBean patientResult = patientInfoProxy.createPatient(patient);</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (patientResult.getId()==null) {</span>
+<span class="nc" id="L150">			String errorMessage = &quot;Sorry, &quot; + patient.getFamily() + &quot; &quot; + patient.getGiven() + &quot; already exist.&quot;;</span>
+<span class="nc" id="L151">			model.addAttribute(&quot;errorMessage&quot;,errorMessage);</span>
+<span class="nc" id="L152">			return &quot;PatientCreate&quot;;</span>
+		}
+<span class="fc" id="L154">		return &quot;redirect:/PatientInfo?id=&quot; + patientResult.getId();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

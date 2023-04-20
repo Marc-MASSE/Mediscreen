@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+patientui,fr.marc.patientui.controller,PatientController,47,163,5,11,13,44,6,13,1,10
+patientui,fr.marc.patientui.controller,NoteController,46,62,0,0,10,14,2,5,2,5
+patientui,fr.marc.patientui,PatientuiApplication,5,3,0,0,2,1,1,1,1,1

@@ -1,0 +1,9 @@
+fr\marc\patientui\controller\PatientControllerTest$PatientUpdateRequest.class
+fr\marc\patientui\controller\PatientControllerTest$PatientSearchRequest.class
+fr\marc\patientui\controller\NoteControllerTest$NoteCreateRequest.class
+fr\marc\patientui\controller\PatientControllerTest.class
+fr\marc\patientui\PatientuiApplicationTests.class
+fr\marc\patientui\controller\PatientControllerTest$PatientCreateRequest.class
+fr\marc\patientui\controller\NoteControllerTest.class
+fr\marc\patientui\controller\NoteControllerTest$NoteUpdateRequest.class
+fr\marc\patientui\controller\PatientControllerTest$displayPatientSearchPage.class

@@ -1,0 +1,7 @@
+fr\marc\patientInfo\model\Patient$PatientBuilder.class
+fr\marc\patientInfo\service\IPatientInfoService.class
+fr\marc\patientInfo\repository\PatientInfoRepository.class
+fr\marc\patientInfo\model\Patient.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImpl.class
+fr\marc\patientInfo\PatientInfoApplication.class
+fr\marc\patientInfo\controller\PatientInfoController.class
