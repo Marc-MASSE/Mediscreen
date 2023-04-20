@@ -46,18 +46,24 @@ https://dev.mysql.com/downloads/mysql/
 https://www.mongodb.com/try?jmp=nav#community
 
 
-## Endpoints examples
+### Docker deployment
 
-**To get a patient's age and risk of having diabetes :**<br>
-http://localhost:8083/PatientReport
+1.Build Docker image for each API :
 
+- On /patientInfo directory : docker build -t patientinfo .
 
-## Swagger documentation
+- On /patientNote directory : docker build -t patientnote .
 
-[http://localhost:8083/swagger-ui/index.html#/](http://localhost:8083/swagger-ui/index.html#/)
+- On /patientReport directory : docker build -t patientreport .
 
+- On /patientui directory : docker build -t patientui .
 
+2.For defining and running multi-container Docker applications:
 
+- docker-compose up -d
 
+### To run Mediscreen
+
+[http://localhost:8080/](http://localhost:8080/)
 
 
