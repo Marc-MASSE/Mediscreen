@@ -29,7 +29,7 @@ public class PatientInfoController {
 	 */
 	@GetMapping("/PatientInfo/list")
 	public Iterable<Patient> getPatients(){
-		log.info("GET /PatientInfo/list => list of all patients");
+		log.info("GET /PatientInfo/list => list of all patients {}", patientInfoService.getPatients());
 		return patientInfoService.getPatients();
 	}
 	

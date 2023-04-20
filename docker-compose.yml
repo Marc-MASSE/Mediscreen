@@ -6,15 +6,15 @@ services:
     image: mysql:8.0.32
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./src/main/resources:/docker-entrypoint-initdb.d
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1CptaMySQL
+      MYSQL_ROOT_PASSWORD: 1CptaMySQL?
       MYSQL_DATABASE: mediscreen
       MYSQL_USER: mediscreen
-      MYSQL_PASSWORD: 1CptaMySQL
+      MYSQL_PASSWORD: 1CptaMySQL?
     ports:
-      - 3306:3306
+      - 3307:3306
   
   mongo:
     image: mongo
@@ -22,7 +22,7 @@ services:
       - mongo_data:/data/db
     restart: always
     ports:
-      - 27017:27017
+      - 27018:27017
   
   patientinfo:
     image: patientinfo
@@ -31,7 +31,7 @@ services:
     depends_on:
       - mysql
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql/mediscreen?serverTimezone=Europe/Paris
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mediscreen?serverTimezone=Europe/Paris
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1CptaMySQL?
     ports:
@@ -56,6 +56,8 @@ services:
     image: patientreport
     build:
       context: patientreport
+    depends_on:
+      - mysql
     ports:
       - "8083:8083"
     restart: always
@@ -81,5 +83,4 @@ services:
       PATIENT_REPORT_PROXY_URL: http://patientreport:8083
 
 volumes:
-  mysql_data: null
-  mongo_data: null
+    mongo_data: null
