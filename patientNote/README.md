@@ -15,6 +15,7 @@ What things you need to install the software and how to install them
 - Java 17
 - Maven 4.0.0
 - Lombok 1.18.26
+- MogoDB 4.8.2
 
 ### Installing
 
@@ -22,7 +23,7 @@ A step by step series of examples that tell you how to get a development env run
 
 1.Install Java:
 
-https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
+https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 
 2.Install Maven:
 
@@ -39,7 +40,9 @@ https://projectlombok.org/download
 http://localhost:8082/PatientNote/byPatient<br>
 Exemple : [http://localhost:8082/PatientNote/byPatient?patId=1](http://localhost:8082/PatientNote/byPatient?patId=1)
 
+## Swagger documentation
 
+[http://localhost:8082/swagger-ui/index.html#/](http://localhost:8082/swagger-ui/index.html#/)
 
 
 

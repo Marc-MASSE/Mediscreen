@@ -9,7 +9,8 @@ import fr.marc.patientui.beans.PatientAndNotesBean;
 import fr.marc.patientui.beans.PatientBean;
 import fr.marc.patientui.beans.ReportBean;
 
-@FeignClient(name = "mediscreen-patientReport", url = "localhost:8083")
+//@FeignClient(name = "mediscreen-patientReport", url = "localhost:8083")
+@FeignClient(name = "mediscreen-patientReport", url = "http://patientreport:8083")
 public interface PatientReportProxy {
 	
 	@PostMapping("/PatientReport")

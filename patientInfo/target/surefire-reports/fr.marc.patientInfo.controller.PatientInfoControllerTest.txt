@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: fr.marc.patientInfo.controller.PatientInfoControllerTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8 s - in fr.marc.patientInfo.controller.PatientInfoControllerTest

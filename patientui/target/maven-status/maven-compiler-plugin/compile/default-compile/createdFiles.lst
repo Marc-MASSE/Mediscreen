@@ -1,0 +1,15 @@
+fr\marc\patientui\beans\PatientAndNotesBean.class
+fr\marc\patientui\proxies\PatientNoteProxy.class
+fr\marc\patientui\proxies\PatientReportProxy.class
+fr\marc\patientui\beans\PatientBean.class
+fr\marc\patientui\beans\ReportBean$ReportBeanBuilder.class
+fr\marc\patientui\PatientuiApplication.class
+fr\marc\patientui\beans\NoteBean$NoteBeanBuilder.class
+fr\marc\patientui\beans\PatientBean$PatientBeanBuilder.class
+fr\marc\patientui\beans\NoteBean.class
+fr\marc\patientui\proxies\PatientInfoProxy.class
+fr\marc\patientui\controller\PatientController.class
+fr\marc\patientui\beans\PatientAndNotesBean$PatientAndNotesBeanBuilder.class
+fr\marc\patientui\beans\ReportBean.class
+fr\marc\patientui\beans\PatientBeanDTO.class
+fr\marc\patientui\controller\NoteController.class

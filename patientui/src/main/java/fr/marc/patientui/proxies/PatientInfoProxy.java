@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.marc.patientui.beans.PatientBean;
 
-@FeignClient(name = "mediscreen-patientInfo", url = "localhost:8081")
+//@FeignClient(name = "mediscreen-patientInfo", url = "localhost:8081")
+@FeignClient(name = "mediscreen-patientInfo", url = "http://patientinfo:8081")
 public interface PatientInfoProxy {
 	
 	@GetMapping(value = "/PatientInfo/list")

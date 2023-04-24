@@ -1,0 +1,15 @@
+fr\marc\patientReport\model\Report.class
+fr\marc\patientReport\repository\PatientReportRepository.class
+fr\marc\patientReport\model\Patient$PatientBuilder.class
+fr\marc\patientReport\controller\PatientReportController.class
+fr\marc\patientReport\model\PatientAndNotes$PatientAndNotesBuilder.class
+fr\marc\patientReport\model\Note$NoteBuilder.class
+fr\marc\patientReport\service\IPatientReportService.class
+fr\marc\patientReport\serviceImpl\PatientReportServiceImpl.class
+fr\marc\patientReport\model\Note.class
+fr\marc\patientReport\model\Report$ReportBuilder.class
+fr\marc\patientReport\model\Patient.class
+fr\marc\patientReport\model\PatientAndNotes.class
+fr\marc\patientReport\model\Triggers.class
+fr\marc\patientReport\PatientReportApplication.class
+fr\marc\patientReport\model\Triggers$TriggersBuilder.class

@@ -1,0 +1,13 @@
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest$GetPatientsByFamilyAndGiven.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest$CreatePatient.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest$GetPatientById.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest$GetPatientByName.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest$GetPatientByFamilyAndGivenAndDob.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest$UpdatePatient.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest$UpdatePatient.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest$CreatePatient.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest$GetPatients.class
+fr\marc\patientInfo\PatientInfoApplicationTests.class
+fr\marc\patientInfo\controller\PatientInfoControllerTest$GetPatientById.class
+fr\marc\patientInfo\serviceImpl\PatientInfoServiceImplTest.class

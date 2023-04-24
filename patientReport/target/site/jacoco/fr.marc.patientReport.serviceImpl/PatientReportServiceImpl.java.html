@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientReportServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patientReport</a> &gt; <a href="index.source.html" class="el_package">fr.marc.patientReport.serviceImpl</a> &gt; <span class="el_source">PatientReportServiceImpl.java</span></div><h1>PatientReportServiceImpl.java</h1><pre class="source lang-java linenums">package fr.marc.patientReport.serviceImpl;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
+import fr.marc.patientReport.model.Note;
+import fr.marc.patientReport.model.Patient;
+import fr.marc.patientReport.model.Report;
+import fr.marc.patientReport.model.Triggers;
+import fr.marc.patientReport.repository.PatientReportRepository;
+import fr.marc.patientReport.service.IPatientReportService;
+
+@Service
+public class PatientReportServiceImpl implements IPatientReportService {
+
+	private PatientReportRepository patientReportRepository;
+	
+<span class="fc" id="L24">	public PatientReportServiceImpl(PatientReportRepository patientReportRepository) {</span>
+<span class="fc" id="L25">		this.patientReportRepository = patientReportRepository;</span>
+<span class="fc" id="L26">	}</span>
+
+	/**
+	 * To calculate diabetes risk
+	 * @param patient
+	 * @param notes
+	 * @param currentDate
+	 * @return a report containing patient age and diabetes risk assessment
+	 */
+	@Override
+	public Report calculateDiabetesRisk(Patient patient, List&lt;Note&gt; notes, LocalDate currentDate) {
+<span class="fc" id="L37">		Integer age = calculateAge(patient, currentDate);</span>
+<span class="fc" id="L38">		Integer triggersNumber = calculateTriggersNumber(notes);</span>
+<span class="fc" id="L39">		Report report = Report.builder()</span>
+<span class="fc" id="L40">				.age(age)</span>
+<span class="fc" id="L41">				.assessment(assessTheRisk(patient.getSex(),age,triggersNumber))</span>
+<span class="fc" id="L42">				.build();</span>
+<span class="fc" id="L43">		return report;</span>
+	}
+	
+	/**
+	 * To calculate the age of a patient
+	 * @param patient
+	 * @param currentDate
+	 * @return the age as an Integer
+	 */
+	Integer calculateAge(Patient patient, LocalDate currentDate) {
+<span class="fc" id="L53">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="fc" id="L54">		LocalDate birthdate = LocalDate.parse(patient.getDob(), formatter);</span>
+<span class="fc" id="L55">		return (int) ChronoUnit.YEARS.between(birthdate, currentDate);</span>
+	}
+	
+	/**
+	 * To calculate the number of trigger terms in a note list
+	 * @param notes : A note list
+	 * @return The number of trigger terms
+	 */
+	Integer calculateTriggersNumber(List&lt;Note&gt; notes) {
+<span class="fc" id="L64">		Set&lt;String&gt; triggersTermFound = new HashSet&lt;String&gt;();</span>
+<span class="fc" id="L65">		Iterable&lt;Triggers&gt; triggersList = patientReportRepository.findAll();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		for (Note note : notes) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">			for (Triggers triggers : triggersList) {</span>
+<span class="fc" id="L68">				String term = triggers.getTerm();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">				if (note.getBody().toLowerCase().contains(term)){</span>
+<span class="fc" id="L70">					triggersTermFound.add(term);</span>
+				}
+<span class="fc" id="L72">			}</span>
+<span class="fc" id="L73">		}</span>
+<span class="fc" id="L74">		return triggersTermFound.size();</span>
+	}
+	
+	String assessTheRisk(String sex, Integer age, Integer triggersNumber) {
+<span class="fc bfc" id="L78" title="All 4 branches covered.">		if (sex.equals(&quot;F&quot;) &amp;&amp; age &lt;= 30) {</span>
+<span class="fc bfc" id="L79" title="All 4 branches covered.">			if (triggersNumber &gt; 3 &amp;&amp; triggersNumber &lt; 7) {return &quot;Danger&quot;;}</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">			if (triggersNumber &gt; 6) {return &quot;Early onset&quot;;}</span>
+		}
+<span class="fc bfc" id="L82" title="All 4 branches covered.">		if (sex.equals(&quot;M&quot;) &amp;&amp; age &lt;= 30) {</span>
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">			if (triggersNumber == 3 || triggersNumber == 4) {return &quot;Danger&quot;;}</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">			if (triggersNumber &gt; 4) {return &quot;Early onset&quot;;}</span>
+		}
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		if (age &gt; 30) {</span>
+<span class="pc bpc" id="L87" title="1 of 4 branches missed.">			if (triggersNumber &gt; 1 &amp;&amp; triggersNumber &lt; 6) {return &quot;Borderline&quot;;}</span>
+<span class="pc bpc" id="L88" title="1 of 4 branches missed.">			if (triggersNumber == 6 || triggersNumber == 7) {return &quot;Danger&quot;;}</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			if (triggersNumber &gt; 7) {return &quot;Early onset&quot;;}</span>
+		}
+<span class="fc" id="L91">		return &quot;None&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,11 @@
+fr\marc\patientNote\controller\PatientNoteControllerTest$GetNoteById.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImplTest$UpdateNote.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImplTest.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImplTest$GetNotesByPatientId.class
+fr\marc\patientNote\controller\PatientNoteControllerTest.class
+fr\marc\patientNote\controller\PatientNoteControllerTest$GetNotesByPatientId.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImplTest$GetNoteById.class
+fr\marc\patientNote\controller\PatientNoteControllerTest$CreateNote.class
+fr\marc\patientNote\controller\PatientNoteControllerTest$UpdateNote.class
+fr\marc\patientNote\serviceImpl\PatientNoteServiceImplTest$CreateNote.class
+fr\marc\patientNote\PatientNoteApplicationTests.class

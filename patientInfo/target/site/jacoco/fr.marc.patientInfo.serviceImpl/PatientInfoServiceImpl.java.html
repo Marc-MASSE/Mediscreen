@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientInfoServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">patientInfo</a> &gt; <a href="index.source.html" class="el_package">fr.marc.patientInfo.serviceImpl</a> &gt; <span class="el_source">PatientInfoServiceImpl.java</span></div><h1>PatientInfoServiceImpl.java</h1><pre class="source lang-java linenums">package fr.marc.patientInfo.serviceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import fr.marc.patientInfo.model.Patient;
+import fr.marc.patientInfo.repository.PatientInfoRepository;
+import fr.marc.patientInfo.service.IPatientInfoService;
+
+@Service
+public class PatientInfoServiceImpl implements IPatientInfoService {
+	
+<span class="fc" id="L18">	private static final Logger log = LoggerFactory.getLogger(PatientInfoServiceImpl.class); </span>
+
+	private PatientInfoRepository patientInfoRepository;
+	
+<span class="fc" id="L22">	public PatientInfoServiceImpl(PatientInfoRepository patientInfoRepository) {</span>
+<span class="fc" id="L23">		this.patientInfoRepository = patientInfoRepository;</span>
+<span class="fc" id="L24">	}</span>
+
+	/**
+	 * To collect the list of all patients
+	 * @return the list of all patients
+	 */
+	@Override
+	public Iterable&lt;Patient&gt; getPatients(){
+<span class="fc" id="L32">		log.info(&quot;Get all patients&quot;);</span>
+<span class="fc" id="L33">		return patientInfoRepository.findAllByOrderByFamilyAsc();</span>
+	}
+
+	/**
+	 * To find a patient according to an id
+	 * @param id
+	 * @return the patient according to this id
+	 * 			null is there is no patient with this id
+	 */
+	@Override
+	public Optional&lt;Patient&gt; getPatientById(Integer id){
+<span class="fc" id="L44">		log.info(&quot;Get the patient with id = {}&quot;,id);</span>
+<span class="fc" id="L45">		Optional&lt;Patient&gt; patient = patientInfoRepository.findById(id);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		if (patient.isPresent()) {</span>
+<span class="fc" id="L47">			return patient;</span>
+		}
+<span class="fc" id="L49">		log.error(&quot;There is no patient with id = {} &quot;,id);</span>
+<span class="fc" id="L50">		return null;</span>
+	}
+
+	/**
+	 * To find the list of patients according to a Last name and First name
+	 * @param family = Last name in the HL7 (Health Level Seven) standard
+	 * @param given = First name in the HL7 (Health Level Seven) standard
+	 * @return the list of patients according to this Last name and First name
+	 * 			new Patient() if there is no patient according to this Last name and First name
+	 */
+	@Override
+	public List&lt;Patient&gt; getPatientsByFamilyAndGiven(String family, String given){
+<span class="fc" id="L62">		log.info(&quot;Get the patient {} {}&quot;,family, given);</span>
+<span class="fc" id="L63">		List&lt;Patient&gt; patientList = patientInfoRepository.findByFamilyAndGiven(family, given);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (patientList.isEmpty()) {</span>
+<span class="fc" id="L65">			return new ArrayList&lt;Patient&gt;();</span>
+		}
+<span class="fc" id="L67">		return patientList;</span>
+	}
+
+	/**
+	 * To find a patient matching a last name, first name and birthday
+	 * @param family : Last name in the HL7 (Health Level Seven) standard
+	 * @param given : First name in the HL7 (Health Level Seven) standard
+	 * @param dob : birthday in the HL7 (Health Level Seven) standard
+	 * @return The first patient matching a last name, first name and birthday
+	 */
+	@Override
+	public Optional&lt;Patient&gt; getPatientByFamilyAndGivenAndDob(String family, String given, String dob){
+<span class="fc" id="L79">		log.info(&quot;Get the patient {} {} {}&quot;, family, given, dob);</span>
+<span class="fc" id="L80">		return patientInfoRepository.findFirstByFamilyAndGivenAndDob(family, given, dob);</span>
+	}
+	
+	/**
+	 * To update a patient designated by his id.
+	 * @param id : The id of the patient you want to update
+	 * @param patient : New patient data 
+	 * @return The patient updated
+	 * 			null is there is no patient with this id
+	 * 			new Patient() if the data match another patient 
+	 */
+	@Override
+	public Patient updatePatient(Integer patientId, Patient updatedPatient){
+<span class="fc" id="L93">		log.info(&quot;Update the patient with id = {}&quot;,patientId);</span>
+		
+<span class="fc" id="L95">		Optional&lt;Patient&gt; currentPatient = patientInfoRepository.findById(patientId);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (currentPatient.isEmpty()) {</span>
+<span class="fc" id="L97">			return null;</span>
+		}
+		// Test if the patient to update already exist
+<span class="fc" id="L100">		Optional&lt;Patient&gt; wantedPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(</span>
+<span class="fc" id="L101">				updatedPatient.getFamily(),</span>
+<span class="fc" id="L102">				updatedPatient.getGiven(), </span>
+<span class="fc" id="L103">				updatedPatient.getDob());</span>
+<span class="pc bpc" id="L104" title="1 of 4 branches missed.">		if (wantedPatient.isPresent() &amp;&amp; !wantedPatient.get().getId().equals(patientId)) {</span>
+<span class="fc" id="L105">			return new Patient();</span>
+		}
+<span class="fc" id="L107">		currentPatient.get().setFamily(updatedPatient.getFamily());</span>
+<span class="fc" id="L108">		currentPatient.get().setGiven(updatedPatient.getGiven());</span>
+<span class="fc" id="L109">		currentPatient.get().setDob(updatedPatient.getDob());</span>
+<span class="fc" id="L110">		currentPatient.get().setSex(updatedPatient.getSex());</span>
+<span class="fc" id="L111">		currentPatient.get().setAddress(updatedPatient.getAddress());</span>
+<span class="fc" id="L112">		currentPatient.get().setPhone(updatedPatient.getPhone());</span>
+<span class="fc" id="L113">		return patientInfoRepository.save(currentPatient.get());</span>
+	}
+
+	/**
+	 * To create a new patient
+	 * @param patient
+	 * @return The patient created
+	 * 			null if this patient already exist
+	 */
+	@Override
+	public Patient createPatient(Patient patient){
+<span class="fc" id="L124">		Optional&lt;Patient&gt; findingPatient = patientInfoRepository.findFirstByFamilyAndGivenAndDob(patient.getFamily(),patient.getGiven(), patient.getDob());</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (findingPatient.isPresent()) {</span>
+<span class="fc" id="L126">			return new Patient();</span>
+		}
+<span class="fc" id="L128">		return patientInfoRepository.save(patient);</span>
+	}
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
